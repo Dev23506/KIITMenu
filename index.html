@@ -3,7 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIIT Hostel Menu</title>
+    <title>Hostel Food Menu</title>
+    
+    <!-- PWA & Mobile Web App Meta Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Hostel Menu">
+    
+    <!-- App Icons & Manifest embedded via Data URIs -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext y='.9em' font-size='70' x='15'%3E%F0%9F%8D%B1%3C/text%3E%3C/svg%3E">
+    <link rel="manifest" href='data:application/manifest+json,{"name":"KIIT Hostel Food Menu","short_name":"Hostel Menu","description":"KIIT Hostel daily real-time meal timings and food items","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#2563eb","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%232563eb%22/%3E%3Ctext y=%22.9em%22 font-size=%2270%22 x=%2215%22%3E%F0%9F%8D%B1%3C/text%3E%3C/svg%3E","sizes":"192x192 512x512","type":"image/svg+xml"}]}'>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -25,7 +37,6 @@
         }
     </script>
     <style>
-        /* Custom styles for AMOLED Dark Theme */
         html[data-theme="amoled"] {
             color-scheme: dark;
         }
@@ -87,8 +98,8 @@
 
     <div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
         
-        <!-- Header & Theme Controls -->
-        <div class="flex justify-between items-center mb-8 relative">
+        <!-- Header & Controls -->
+        <div class="flex justify-between items-center mb-8 relative flex-wrap gap-3">
             
             <!-- Custom Hostel Dropdown -->
             <div class="relative w-48 sm:w-64" id="hostelDropdownContainer">
@@ -104,17 +115,26 @@
                 </div>
             </div>
             
-            <!-- Theme Selector -->
-            <div class="flex items-center space-x-1 sm:space-x-2 bg-white dark:bg-gray-800 p-1.5 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
-                <button onclick="setTheme('light')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Light Mode">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <!-- Install App & Theme Controls -->
+            <div class="flex items-center space-x-2">
+                <!-- Install App Button (Hidden by default, shown via PWA prompt listener) -->
+                <button id="installAppBtn" onclick="installPWA()" class="hidden flex items-center space-x-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm px-3.5 py-2 rounded-full shadow-sm transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    <span>Install App</span>
                 </button>
-                <button onclick="setTheme('dark')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Dark Mode">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                </button>
-                <button onclick="setTheme('amoled')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="AMOLED Dark Mode">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"></path></svg>
-                </button>
+
+                <!-- Theme Selector -->
+                <div class="flex items-center space-x-1 sm:space-x-2 bg-white dark:bg-gray-800 p-1.5 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
+                    <button onclick="setTheme('light')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Light Mode">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    </button>
+                    <button onclick="setTheme('dark')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Dark Mode">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <button onclick="setTheme('amoled')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="AMOLED Dark Mode">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"></path></svg>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -156,8 +176,70 @@
         </div>
     </div>
 
+    <!-- PWA Install Modal / Instructions (For iOS) -->
+    <div id="iosInstallModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-sm w-full shadow-xl text-center border border-gray-200 dark:border-gray-700">
+            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                📲
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Install on iOS</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                To install this web app on your iPhone or iPad:
+            </p>
+            <ol class="text-xs sm:text-sm text-left text-gray-600 dark:text-gray-300 space-y-2 mb-6 bg-gray-50 dark:bg-gray-900 p-3 rounded-xl">
+                <li class="flex items-center space-x-2">
+                    <span class="font-bold">1.</span>
+                    <span>Tap the <strong>Share</strong> button at the bottom of Safari.</span>
+                </li>
+                <li class="flex items-center space-x-2">
+                    <span class="font-bold">2.</span>
+                    <span>Scroll down and tap <strong>Add to Home Screen</strong>.</span>
+                </li>
+            </ol>
+            <button onclick="document.getElementById('iosInstallModal').classList.add('hidden')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl hover:bg-blue-700 transition-colors">
+                Got it
+            </button>
+        </div>
+    </div>
+
     <script>
-        // -- Theme Management --
+        let deferredPrompt = null;
+
+        // Listen for browser install prompt (Android, Chrome, Edge)
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const btn = document.getElementById('installAppBtn');
+            if (btn) btn.classList.remove('hidden');
+        });
+
+        // Trigger installation logic
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        document.getElementById('installAppBtn').classList.add('hidden');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // Check if iOS
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isIOS) {
+                    document.getElementById('iosInstallModal').classList.remove('hidden');
+                } else {
+                    alert("App is already installed or your browser doesn't support direct web app installation.");
+                }
+            }
+        }
+
+        window.addEventListener('appinstalled', () => {
+            const btn = document.getElementById('installAppBtn');
+            if (btn) btn.classList.add('hidden');
+            deferredPrompt = null;
+        });
+
         function setTheme(themeName) {
             localStorage.setItem('preferredTheme', themeName);
             
@@ -183,7 +265,6 @@
         }
         initTheme();
 
-        // -- Menu Data --
         const menuData = {
             "Monday": {
                 breakfast: {
@@ -348,19 +429,16 @@
             dinner: { name: "Dinner", start: 20 * 60, end: 22 * 60, display: "08.00 PM to 10.00 PM" }
         };
 
-        // Icons
         const icons = {
             breakfast: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`,
             lunch: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>`,
-            snacks: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path></svg>`,
+            snacks: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path></svg>`,
             dinner: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`
         };
 
-        // Application State
         let currentMode = 'overview';
         let selectedHostelId = 'KP-7 (ABC)';
         
-        // Helper: Generate HTML for a meal card
         function createMealCardHtml(mealKey, mealDetails, timeStr, isActive = false) {
             const title = mealTimings[mealKey].name;
             const icon = icons[mealKey];
@@ -376,7 +454,6 @@
                 if (label === 'Healthy') label = 'Healthy Option';
                 if (label === 'Main') label = 'Items';
 
-                // Skip if value is "NONE"
                 if (val.trim().toUpperCase() === "NONE") continue;
 
                 detailsHtml += `
@@ -410,7 +487,6 @@
             `;
         }
 
-        // Core logic: Render view based on state
         function renderView() {
             const container = document.getElementById('contentContainer');
             const daySelector = document.getElementById('daySelectorWrapper');
@@ -573,12 +649,40 @@
             }
         });
 
+        // Service Worker Registration for PWA caching & installability
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    const CACHE_NAME = 'hostel-menu-v1';
+                    self.addEventListener('install', (e) => self.skipWaiting());
+                    self.addEventListener('activate', (e) => e.waitUntil(clients.claim()));
+                    self.addEventListener('fetch', (e) => {
+                        e.respondWith(
+                            fetch(e.request).catch(() => caches.match(e.request))
+                        );
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'text/javascript' });
+                navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(err => {
+                    console.log('SW registration note:', err.message);
+                });
+            });
+        }
+
         function initApp() {
             const savedHostel = localStorage.getItem('preferredHostel');
             if(savedHostel) {
                 selectedHostelId = savedHostel;
                 document.getElementById('selectedHostel').textContent = savedHostel;
             }
+            
+            // Check if iOS to display install button if applicable
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            if (isIOS && !isStandalone) {
+                document.getElementById('installAppBtn').classList.remove('hidden');
+            }
+
             renderView();
             setInterval(() => {
                 if(currentMode === 'overview' || currentMode === 'today') {
