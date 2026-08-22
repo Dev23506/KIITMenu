@@ -3,823 +3,591 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hostel Smart Menu</title>
+    <title>KIIT Hostel Menu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        blue: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        /* Custom styles for AMOLED Dark Theme */
+        html[data-theme="amoled"] {
+            color-scheme: dark;
         }
-        /* Custom scrollbar for a cleaner look */
-        ::-webkit-scrollbar {
-            width: 8px;
+        html[data-theme="amoled"] body {
+            background-color: #000000;
+            color: #ffffff;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9; 
+        html[data-theme="amoled"] .bg-white,
+        html[data-theme="amoled"] .bg-gray-800,
+        html[data-theme="amoled"] .bg-gray-900 {
+            background-color: #0a0a0a !important;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 4px;
+        html[data-theme="amoled"] .border-gray-100,
+        html[data-theme="amoled"] .border-gray-200,
+        html[data-theme="amoled"] .border-gray-700,
+        html[data-theme="amoled"] .border-gray-800 {
+            border-color: #1a1a1a !important;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
+        html[data-theme="amoled"] .text-gray-800,
+        html[data-theme="amoled"] .text-gray-900,
+        html[data-theme="amoled"] .text-gray-100,
+        html[data-theme="amoled"] .text-gray-200 {
+            color: #f3f4f6 !important;
+        }
+        html[data-theme="amoled"] .text-gray-500,
+        html[data-theme="amoled"] .text-gray-600 {
+            color: #9ca3af !important;
+        }
+        html[data-theme="amoled"] .bg-gray-50,
+        html[data-theme="amoled"] .bg-gray-100,
+        html[data-theme="amoled"] .bg-gray-700 {
+            background-color: #141414 !important;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            z-index: 50;
+            margin-top: 0.5rem;
+            width: 100%;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .dropdown-content.show {
+            display: block;
         }
         
-        .meal-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .nav-btn {
+            transition: all 0.2s ease;
         }
-        .meal-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
-
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #2563eb;
-        }
-        .toggle-checkbox:checked + .toggle-label {
+        .nav-btn.active {
             background-color: #2563eb;
-        }
-
-        /* AMOLED Theme overrides */
-        html.amoled, html.amoled body {
-            background-color: #000000 !important;
-        }
-        html.amoled header, html.amoled .meal-card, html.amoled #theme-menu, html.amoled #hostel-menu, html.amoled .bg-slate-800, html.amoled .bg-white.dark\:bg-slate-800 {
-            background-color: #0a0a0a !important;
-            border-color: #222222 !important;
-        }
-        html.amoled .bg-slate-900, html.amoled .dark\:bg-slate-900, html.amoled .bg-slate-50, html.amoled .dark\:bg-slate-900\/50, html.amoled .bg-slate-100 {
-            background-color: #000000 !important;
-            border-color: #111111 !important;
-        }
-        html.amoled .bg-slate-200\/50, html.amoled .dark\:bg-slate-800\/80 {
-            background-color: #111111 !important;
-            border-color: #222222 !important;
+            color: white;
+            border-color: #2563eb;
         }
     </style>
 </head>
-<body class="bg-[#f8fafc] dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased min-h-screen flex flex-col transition-colors duration-200">
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-200">
 
-    <header class="bg-white dark:bg-slate-900 shadow-sm border-b border-slate-200 dark:border-slate-800 sticky top-0 z-10 transition-colors duration-200">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
-                <div class="flex items-center gap-3">
-                    <div class="bg-blue-100 dark:bg-blue-500/20 p-2 rounded-lg text-blue-600 dark:text-blue-400">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                    </div>
-                    <div>
-                        <!-- Custom Theme-matching Dropdown -->
-                        <div class="relative" id="hostel-dropdown-wrapper">
-                            <button id="hostel-dropdown-btn" class="flex items-center gap-1 text-xl font-bold bg-transparent outline-none text-slate-900 dark:text-white leading-tight transition-colors">
-                                <span id="selected-hostel-text">KP-7(ABC)</span>
-                                <svg class="w-5 h-5 transition-transform duration-200" id="hostel-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            
-                            <!-- Custom Dropdown Menu -->
-                            <div id="hostel-menu" class="hidden absolute left-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 py-1 z-30">
-                                <button class="hostel-option w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50" data-value="KP-7(ABC)">KP-7(ABC)</button>
-                                <button class="hostel-option w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50" data-value="QC 4">QC 4</button>
-                                <button class="hostel-option w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50" data-value="QC 12">QC 12</button>
-                                <button class="hostel-option w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50" data-value="KP 14">KP 14</button>
-                            </div>
-                        </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase mt-0.5">Food Menu</p>
-                    </div>
-                </div>
-                
-                <!-- Mobile theme toggle -->
-                <div class="sm:hidden flex items-center">
-                    <button id="theme-toggle-mobile" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
-                        <svg id="theme-icon-mobile" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    </button>
+    <div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <!-- Header & Theme Controls -->
+        <div class="flex justify-between items-center mb-8 relative">
+            
+            <!-- Custom Hostel Dropdown -->
+            <div class="relative w-48 sm:w-64" id="hostelDropdownContainer">
+                <button id="dropdownBtn" class="w-full flex justify-between items-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-3 rounded-xl shadow-sm text-left font-bold text-lg sm:text-xl text-blue-600 dark:text-blue-400 focus:outline-none transition-colors">
+                    <span id="selectedHostel">KP-7 (ABC)</span>
+                    <svg class="w-5 h-5 ml-2 transition-transform duration-200 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="dropdownContent" class="dropdown-content bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('KP-7 (ABC)')">KP-7 (ABC)</button>
+                    <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 4')">QC 4</button>
+                    <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 12')">QC 12</button>
+                    <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium" onclick="selectHostel('KP 14')">KP 14</button>
                 </div>
             </div>
             
-            <div class="flex items-center gap-6">
-                <div class="flex flex-col items-center sm:items-end">
-                    <div id="current-day-display" class="text-lg font-semibold text-blue-600 dark:text-blue-400">Loading Day...</div>
-                    <div id="current-time-display" class="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span>--:--</span>
-                    </div>
+            <!-- Theme Selector -->
+            <div class="flex items-center space-x-1 sm:space-x-2 bg-white dark:bg-gray-800 p-1.5 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
+                <button onclick="setTheme('light')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Light Mode">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                </button>
+                <button onclick="setTheme('dark')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Dark Mode">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <button onclick="setTheme('amoled')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="AMOLED Dark Mode">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mainContentArea">
+            <!-- Navigation & Day Selector -->
+            <div class="mb-8 flex flex-col items-center">
+                <!-- Modes -->
+                <div class="flex justify-center space-x-2 bg-gray-200 dark:bg-gray-800 p-1.5 rounded-2xl mb-4 shadow-inner w-full sm:w-auto">
+                    <button id="btnOverview" onclick="setMode('overview')" class="nav-btn flex-1 sm:flex-none px-4 sm:px-6 py-2.5 rounded-xl font-semibold text-sm sm:text-base text-gray-700 dark:text-gray-300">Overview</button>
+                    <button id="btnToday" onclick="setMode('today')" class="nav-btn flex-1 sm:flex-none px-4 sm:px-6 py-2.5 rounded-xl font-semibold text-sm sm:text-base text-gray-700 dark:text-gray-300">Today</button>
+                    <button id="btnAll" onclick="setMode('all')" class="nav-btn flex-1 sm:flex-none px-4 sm:px-6 py-2.5 rounded-xl font-semibold text-sm sm:text-base text-gray-700 dark:text-gray-300">All</button>
                 </div>
                 
-                <!-- Desktop theme toggle -->
-                <div class="hidden sm:block relative">
-                    <button id="theme-toggle-desktop" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" aria-label="Toggle theme">
-                        <svg id="theme-icon-desktop" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    </button>
-                    
-                    <!-- Theme Dropdown -->
-                    <div id="theme-menu" class="hidden absolute right-0 mt-2 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 py-1 z-20">
-                        <button class="theme-option w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center gap-2" data-theme="light">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                            Light
-                        </button>
-                        <button class="theme-option w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center gap-2" data-theme="dark">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                            Dark
-                        </button>
-                        <button class="theme-option w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center gap-2" data-theme="amoled">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                            AMOLED Dark
-                        </button>
-                        <button class="theme-option w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center gap-2" data-theme="system">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                            System
-                        </button>
-                    </div>
+                <!-- Day Dropdown (Only visible in 'All' mode) -->
+                <div id="daySelectorWrapper" class="hidden w-full sm:w-64">
+                    <select id="daySelect" onchange="renderSpecificDay()" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-base rounded-xl focus:ring-blue-500 focus:border-blue-500 block px-4 py-3 shadow-sm outline-none transition-colors">
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
                 </div>
             </div>
-        </div>
-    </header>
 
-    <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex flex-col gap-6">
+            <!-- Dynamic Content Container -->
+            <div id="contentContainer" class="min-h-[400px]">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
         
-        <div class="flex justify-center">
-            <div class="relative flex flex-wrap w-full sm:w-auto bg-slate-200/50 dark:bg-slate-800/80 p-1.5 rounded-xl gap-1 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50">
-                <button id="btn-current" class="flex-1 sm:flex-none px-6 py-2.5 text-sm font-semibold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white transition-all whitespace-nowrap">
-                    Overview
-                </button>
-                <button id="btn-today" class="flex-1 sm:flex-none px-6 py-2.5 text-sm font-semibold rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all whitespace-nowrap">
-                    Today
-                </button>
-                <button id="btn-specific" class="flex-1 sm:flex-none px-6 py-2.5 text-sm font-semibold rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all whitespace-nowrap">
-                    All
-                </button>
-            </div>
+        <!-- Empty State Container -->
+        <div id="emptyStateArea" class="hidden flex flex-col items-center justify-center py-20 text-center">
+            <svg class="w-24 h-24 text-gray-300 dark:text-gray-700 mb-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+            <h2 class="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-2">Cooking your menu...</h2>
+            <p class="text-gray-500 dark:text-gray-500">The menu for this hostel hasn't been uploaded yet.</p>
         </div>
-
-        <!-- Day Selector (Visible only in Specific Day mode) -->
-        <div id="day-selector-container" class="hidden flex-wrap justify-center gap-2 p-1">
-            <!-- Javascript will inject day buttons here -->
-        </div>
-
-        <!-- Notification Banner if looking at next day's meal -->
-        <div id="next-day-banner" class="hidden bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 text-blue-700 dark:text-blue-400 px-4 py-3 rounded-xl flex items-center gap-3">
-            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <span class="text-sm font-medium">Meals for today have ended. Showing tomorrow's upcoming meal.</span>
-        </div>
-
-        <!-- Container for dynamically generated meal cards -->
-        <div id="meals-container" class="grid grid-cols-1 max-w-2xl mx-auto w-full gap-6 items-start">
-            <!-- Cards will be injected here by JS -->
-        </div>
-
-        <!-- Placeholder for when a different hostel is selected -->
-        <div id="placeholder-container" class="hidden flex-col items-center justify-center py-20 text-center">
-            <div class="text-blue-500 mb-4 animate-bounce">
-                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 12a8 8 0 0016 0H4zm2-4h12M9 4v4m6-4v4"></path></svg>
-            </div>
-            <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Cooking your menu...</h3>
-            <p class="text-slate-500 dark:text-slate-400">The menu for this hostel has not been added yet.</p>
-        </div>
-
-    </main>
-
-    <footer class="bg-slate-900 dark:bg-black text-slate-400 py-6 text-center text-sm mt-auto transition-colors duration-200">
-        <p>&copy; B27 Students. Enjoy your meal!</p>
-    </footer>
+    </div>
 
     <script>
-        /* 
-         * CONSTANTS & DATA
-         * Representing times in minutes since midnight for easy comparison.
-         * 07:00 = 7 * 60 = 420
-         * 10:00 = 10 * 60 = 600
-         * 13:00 = 13 * 60 = 780
-         * 15:00 = 15 * 60 = 900
-         * 18:00 = 18 * 60 = 1080
-         * 19:00 = 19 * 60 = 1140
-         * 20:00 = 20 * 60 = 1200
-         * 22:00 = 22 * 60 = 1320
-         */
-        const MEAL_TIMES = {
-            breakfast: { name: 'Breakfast', start: 420, end: 600, timeStr: '07.00 AM to 10.00 AM' },
-            lunch: { name: 'Lunch', start: 780, end: 900, timeStr: '01.00 PM to 03.00 PM' },
-            snacks: { name: 'Evening Snacks', start: 1080, end: 1140, timeStr: '06.00 PM to 07.00 PM' },
-            dinner: { name: 'Dinner', start: 1200, end: 1320, timeStr: '08.00 PM to 10.00 PM' }
-        };
-
-        const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-        const MENU = {
-            1: [ // Monday
-                {
-                    type: 'breakfast',
-                    items: [
-                        { label: 'Option 1', desc: 'CHOLE BHATURE' },
-                        { label: 'Option 2', desc: 'CORNFLAKES WITH MILK & BANANA' },
-                        { label: 'Common', desc: 'COFFEE' }
-                    ]
-                },
-                {
-                    type: 'lunch',
-                    items: [
-                        { label: 'Common', desc: 'RICE, ROTI, DAL, PLAIN CURD, VEG CHIPS & PICKLE' },
-                        { label: 'Veg', desc: 'KATHAL ALOO CURRY' },
-                        { label: 'Non Veg', desc: 'NONE' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                },
-                {
-                    type: 'snacks',
-                    items: [
-                        { label: 'Common', desc: 'ALU CHOP, SAUCE & TEA' }
-                    ]
-                },
-                {
-                    type: 'dinner',
-                    items: [
-                        { label: 'Common', desc: 'RICE, ROTI, DAL, CUSTARD OR RICE KHEER & PICKLE' },
-                        { label: 'Veg', desc: 'VEG KOLHAPURI OR KADHAI VEG' },
-                        { label: 'Non Veg', desc: 'NONE' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                }
-            ],
-            2: [ // Tuesday
-                {
-                    type: 'breakfast',
-                    items: [
-                        { label: 'Option 1', desc: 'UPMA & GHUGUNI OR IDLI, SAMBER & CHUTNEY' },
-                        { label: 'Option 2', desc: 'CORNFLAKES WITH MILK & BANANA' },
-                        { label: 'Common', desc: 'TEA' }
-                    ]
-                },
-                {
-                    type: 'lunch',
-                    items: [
-                        { label: 'Common', desc: 'RICE, ROTI, DAL, TAMATO CHUTNEY, SALAD, PICKLE' },
-                        { label: 'Veg', desc: 'MALAI KOFTA' },
-                        { label: 'Non Veg', desc: 'EGG CURRY' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                },
-                {
-                    type: 'snacks',
-                    items: [
-                        { label: 'Common', desc: 'CORN SPROUT CHAT & COFFEE' }
-                    ]
-                },
-                {
-                    type: 'dinner',
-                    items: [
-                        { label: 'Common', desc: 'GREEN PEAS RICE, ROTI, DAL, GULAB JAMUN & PICKLE' },
-                        { label: 'Veg', desc: 'VEG TADKA' },
-                        { label: 'Non Veg', desc: 'NON VEG TADKA' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                }
-            ],
-            3: [ // Wednesday
-                {
-                    type: 'breakfast',
-                    items: [
-                        { label: 'Option 1', desc: 'BREAD (5 PC), BUTTER (1 PC), JAM (1 PC)/BOILED EGG (2 PC)' },
-                        { label: 'Option 2', desc: 'BREAD (5 PC), BUTTER (1 PC), JAM (1 PC)/VEG CUTLET (2 PC)' },
-                        { label: 'Common', desc: 'COFFEE' }
-                    ]
-                },
-                {
-                    type: 'lunch',
-                    items: [
-                        { label: 'Common', desc: 'RICE, ROTI, DAL, NALI PAPAD, ALU BHARTA & PICKLE' },
-                        { label: 'Veg', desc: 'VEG MANCHURIAN' },
-                        { label: 'Non Veg', desc: 'FISH DOPYAZA OR FISH HOME STYLE WITH POTATO' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                },
-                {
-                    type: 'snacks',
-                    items: [
-                        { label: 'Common', desc: 'PACKET BISCUIT (SMALL) GOODDAY TEA' }
-                    ]
-                },
-                {
-                    type: 'dinner',
-                    items: [
-                        { label: 'Common', desc: 'RICE, ROTI, DAL, PAPAD (SRIRAM) & PICKLE' },
-                        { label: 'Veg', desc: 'PANEER BHURJI' },
-                        { label: 'Non Veg', desc: 'CHICKEN CURRY' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                }
-            ],
-            4: [ // Thursday
-                {
-                    type: 'breakfast',
-                    items: [
-                        { label: 'Option 1', desc: 'DAHI BARA & ALU DUM OR POHA & (GHUGUNI)' },
-                        { label: 'Option 2', desc: 'BREAD (5 PC), BUTTER (1 PC), JAM (1 PC)' },
-                        { label: 'Common', desc: 'TEA' }
-                    ]
-                },
-                {
-                    type: 'lunch',
-                    items: [
-                        { label: 'Common', desc: 'RICE, ROTI. DAL, SALAD, MIX BHAJA & PICKLE' },
-                        { label: 'Veg', desc: 'PUNJABI CHOLE MASALA' },
-                        { label: 'Non Veg', desc: 'NONE' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                },
-                {
-                    type: 'snacks',
-                    items: [
-                        { label: 'Common', desc: 'CHAAT PAPDI & COFFEE' }
-                    ]
-                },
-                {
-                    type: 'dinner',
-                    items: [
-                        { label: 'Common', desc: 'FRIED RICE OR SCHEZWAN RICE, ROTI, DAL FRY, ICE CREAM & PICKLE' },
-                        { label: 'Veg', desc: 'CABBAGE ALOO GREEN MATAR' },
-                        { label: 'Non Veg', desc: 'NONE' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                }
-            ],
-            5: [ // Friday
-                {
-                    type: 'breakfast',
-                    items: [
-                        { label: 'Option 1', desc: 'VADA & GHUGUNI OR PURI & ALU DUM' },
-                        { label: 'Option 2', desc: 'CORNFLAKES WITH MILK & BANANA' },
-                        { label: 'Common', desc: 'COFFEE' }
-                    ]
-                },
-                {
-                    type: 'lunch',
-                    items: [
-                        { label: 'Common', desc: 'RICE, ROTI, DAL, ALOO KARELA CHIPS & PICKLE' },
-                        { label: 'Veg', desc: 'KALA CHANA CURRY OR VEG KEEMA BUTTER MASALA' },
-                        { label: 'Non Veg', desc: 'FISH MUSTARD OR FISH PUNJABI' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                },
-                {
-                    type: 'snacks',
-                    items: [
-                        { label: 'Common', desc: 'MIXTURE JHAL MURI & COFFEE' }
-                    ]
-                },
-                {
-                    type: 'dinner',
-                    items: [
-                        { label: 'Common', desc: 'NONE' },
-                        { label: 'Veg', desc: 'VEG BIRIYANI (SEASONAL VEGETABLES) & DAHI RAITA, PANEER BUTTER MASALA' },
-                        { label: 'Non Veg', desc: 'CHICKEN BIRIYANI & DAHI RAITA' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                }
-            ],
-            6: [ // Saturday
-                {
-                    type: 'breakfast',
-                    items: [
-                        { label: 'Option 1', desc: 'BREAD (5 PC), BUTTER (1 PC), JAM (1 PC)/BOILED EGG (2 PC)' },
-                        { label: 'Option 2', desc: 'BREAD (5 PC), BUTTER (1 PC), JAM (1 PC)/VEG CUTLET (2 PC)' },
-                        { label: 'Common', desc: 'TEA' }
-                    ]
-                },
-                {
-                    type: 'lunch',
-                    items: [
-                        { label: 'Common', desc: 'JEERA RICE, ROTI,DAL, ALOO CHOKHA DAHI KADHI, SRIRAM PAPAD & PICKLE' },
-                        { label: 'Veg', desc: 'ALOO GREEN MATAR CAPSICUM OR VEG KOFTA (RED GRAVY)' },
-                        { label: 'Non Veg', desc: 'NONE' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                },
-                {
-                    type: 'snacks',
-                    items: [
-                        { label: 'Common', desc: 'VEG PAKODI & TEA' }
-                    ]
-                },
-                {
-                    type: 'dinner',
-                    items: [
-                        { label: 'Common', desc: 'RICE, ROTI, DAL, PAPAD & PICKLE' },
-                        { label: 'Veg', desc: 'KADHAI PANEER OR PANEER DOPYAZA' },
-                        { label: 'Non Veg', desc: 'KADHAI CHICKEN OR CHICKEN DOPYAZA' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                }
-            ],
-            0: [ // Sunday
-                {
-                    type: 'breakfast',
-                    items: [
-                        { label: 'Option 1', desc: 'UTTAPAM, SAMBAR & CHUTNEY OR CHAKULI, ALU MASALA & CHUTNEY' },
-                        { label: 'Option 2', desc: 'BREAD (5 PC), BUTTER (1 PC), JAM (1 PC)' },
-                        { label: 'Common', desc: 'COFFEE' }
-                    ]
-                },
-                {
-                    type: 'lunch',
-                    items: [
-                        { label: 'Common', desc: 'RICE, ROTI, DAL, MIX TAWA VAJI, DAHI SALAD, PICKLE' },
-                        { label: 'Veg', desc: 'CORN ALOO (SEMI GRAVY)' },
-                        { label: 'Non Veg', desc: 'EGG KALIA' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                },
-                {
-                    type: 'snacks',
-                    items: [
-                        { label: 'Common', desc: 'VEG SOUP, NON VEG SOUP & SPROUTS' }
-                    ]
-                },
-                {
-                    type: 'dinner',
-                    items: [
-                        { label: 'Common', desc: 'FRIED RICE, ROTI, DAL, KHEER GAJA & PICKLE' },
-                        { label: 'Veg', desc: 'CHILLY PANEER' },
-                        { label: 'Non Veg', desc: 'CHILLY CHICKEN' },
-                        { label: 'Healthy Option', desc: 'MIXED BOILED VEGETABLES' }
-                    ]
-                }
-            ]
-        };
-
-        let viewMode = 'CURRENT'; // 'CURRENT', 'TODAY', 'SPECIFIC'
-        let selectedSpecificDay = new Date().getDay();
-        let lastMinuteUpdate = -1;
-        let currentSelectedHostel = localStorage.getItem('selectedHostel') || 'KP-7(ABC)';
-
-        const btnCurrent = document.getElementById('btn-current');
-        const btnToday = document.getElementById('btn-today');
-        const btnSpecific = document.getElementById('btn-specific');
-        const daySelectorContainer = document.getElementById('day-selector-container');
-        const mealsContainer = document.getElementById('meals-container');
-        const placeholderContainer = document.getElementById('placeholder-container');
-        const nextDayBanner = document.getElementById('next-day-banner');
-        const currentDayDisplay = document.getElementById('current-day-display');
-        const currentTimeDisplay = document.getElementById('current-time-display');
-        
-        // Custom Hostel Dropdown elements
-        const selectedHostelText = document.getElementById('selected-hostel-text');
-        const hostelDropdownBtn = document.getElementById('hostel-dropdown-btn');
-        const hostelMenu = document.getElementById('hostel-menu');
-        const hostelOptions = document.querySelectorAll('.hostel-option');
-        const hostelChevron = document.getElementById('hostel-chevron');
-
-        // Theme Management
-        const themeToggleDesktop = document.getElementById('theme-toggle-desktop');
-        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
-        const themeMenu = document.getElementById('theme-menu');
-        const themeOptions = document.querySelectorAll('.theme-option');
-        const themeIcons = {
-            light: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>`,
-            dark: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>`,
-            amoled: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>`,
-            system: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>`
-        };
-
-        function getSystemTheme() {
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-
-        function applyTheme(theme) {
-            const actualTheme = theme === 'system' ? getSystemTheme() : theme;
+        // -- Theme Management --
+        function setTheme(themeName) {
+            localStorage.setItem('preferredTheme', themeName);
             
-            // Handle dark class
-            if (actualTheme === 'dark' || actualTheme === 'amoled') {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-
-            // Handle amoled class specifically
-            if (theme === 'amoled') {
-                document.documentElement.classList.add('amoled');
-            } else {
-                document.documentElement.classList.remove('amoled');
-            }
+            const html = document.documentElement;
+            html.classList.remove('dark');
+            html.removeAttribute('data-theme');
             
-            const iconSvg = themeIcons[theme] || themeIcons.system;
-            document.getElementById('theme-icon-desktop').innerHTML = iconSvg;
-            document.getElementById('theme-icon-mobile').innerHTML = iconSvg;
+            if (themeName === 'dark') {
+                html.classList.add('dark');
+            } else if (themeName === 'amoled') {
+                html.classList.add('dark');
+                html.setAttribute('data-theme', 'amoled');
+            }
         }
 
-        function setTheme(theme) {
-            localStorage.setItem('theme', theme);
-            applyTheme(theme);
-            themeMenu.classList.add('hidden');
+        function initTheme() {
+            const savedTheme = localStorage.getItem('preferredTheme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme('dark');
+            }
         }
+        initTheme();
 
-        const savedTheme = localStorage.getItem('theme') || 'system';
-        applyTheme(savedTheme);
+        // -- Menu Data --
+        const menuData = {
+            "Monday": {
+                breakfast: {
+                    option1: "CHOLE BHATURE / CORNFLAKES WITH MILK & BANANA",
+                    option2: "PURI, ALOO DUM / CORNFLAKES WITH MILK & BANANA",
+                    common: "COFFEE"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, PLAIN CURD",
+                    veg: "Option 1: VEG KOLHAPURI, FRENCH FRIES<br>Option 2: ALOO PARWAL KASSA, MIX BHAJA",
+                    nonVeg: "NONE",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "VEGETABLE CHOP & TEA"
+                },
+                dinner: {
+                    common: "RICE, ROTI, DAL, MIX BHAJA",
+                    veg: "Option 1: MUTTER PANEER, SEMIYA KHEER<br>Option 2: KADHAI PANEER, RICE KHEER",
+                    nonVeg: "NONE",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            },
+            "Tuesday": {
+                breakfast: {
+                    option1: "IDLI, SAMBAR & CHUTNEY / BREAD (5 PC), BUTTER (1 PC), JAM (2 PC)",
+                    option2: "UPMA & GHUGUNI / BREAD (5 PC), BUTTER (1 PC), JAM (2 PC)",
+                    common: "COFFEE"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, TOMATO CHUTNEY",
+                    veg: "Option 1: MALAI KOFTA, COIN PAPAD<br>Option 2: BHINDI ALOO MASALA, SALAD",
+                    nonVeg: "Option 1: EGG CURRY<br>Option 2: EGG KALIA",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "SPROUT CHAAT & TEA"
+                },
+                dinner: {
+                    common: "FRIED RICE, ROTI, GULAB JAMUN & PICKLE",
+                    veg: "VEG TADKA",
+                    nonVeg: "NONE",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            },
+            "Wednesday": {
+                breakfast: {
+                    option1: "BREAD (5 PC), BUTTER (1 PC), JAM (2 PC) / BOILED EGG (2 PC)",
+                    option2: "BREAD (5 PC), BUTTER (1 PC), JAM (2 PC) / VEG CHOP (2 PC)",
+                    common: "TEA"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, NALI PAPAD, ALOO BHARTA & PICKLE",
+                    veg: "VEG MANCHURIAN",
+                    nonVeg: "Option 1: FISH KALIA<br>Option 2: FISH HOME STYLE WITH POTATO",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "PACKET BISCUIT (SMALL) & TEA"
+                },
+                dinner: {
+                    common: "RICE, ROTI, DAL, SALAD & PICKLE",
+                    veg: "Option 1: PANEER BHURJI<br>Option 2: PANEER HYDERABADI",
+                    nonVeg: "Option 1: CHICKEN HOME STYLE CURRY<br>Option 2: CHICKEN HYDERABADI",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            },
+            "Thursday": {
+                breakfast: {
+                    option1: "VEG CHOWMEIN / CORNFLAKES WITH MILK & BANANA",
+                    option2: "VEG PASTA / CORNFLAKES WITH MILK & BANANA",
+                    common: "TEA"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, DAHI KADHI, PAPAD",
+                    veg: "Option 1: PUNJABI CHOLE MASALA<br>Option 2: NAVRATNA KORMA",
+                    nonVeg: "NONE",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "PAPDI CHAAT & TEA"
+                },
+                dinner: {
+                    common: "RICE, PURI, ICE CREAM & PICKLE",
+                    veg: "CHANA DAL NARIYAL CURRY, ALOO DUM",
+                    nonVeg: "NONE",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            },
+            "Friday": {
+                breakfast: {
+                    option1: "BREAD (5 PC), BUTTER (1 PC), JAM (2 PC) / BOILED EGG (2 PC)",
+                    option2: "BREAD (5 PC), BUTTER (1 PC), JAM (2 PC) / VEG CUTLET (2 PC)",
+                    common: "TEA"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, ALOO KARELA CHIPS & PICKLE",
+                    veg: "VEG JHALFRY WITH PANEER",
+                    nonVeg: "FISH MUSTARD",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "MIXTURE JHAL MURI & COFFEE"
+                },
+                dinner: {
+                    common: "DAHI RAITA",
+                    veg: "VEG BIRYANI, PANEER BUTTER MASALA",
+                    nonVeg: "CHICKEN BIRYANI",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            },
+            "Saturday": {
+                breakfast: {
+                    option1: "VADA, GHUGUNI / CORNFLAKES WITH MILK & BANANA",
+                    option2: "DAHI VADA, ALOO DUM / CORNFLAKES WITH MILK & BANANA",
+                    common: "COFFEE"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, DAHI BOONDI, SRIRAM PAPAD",
+                    veg: "Option 1: RAJMA ALOO MASALA<br>Option 2: SOYABEAN ALOO CURRY",
+                    nonVeg: "NONE",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "VEG PAKODI & TEA"
+                },
+                dinner: {
+                    common: "RICE, ROTI, DAL, KHEERA GAJA & PICKLE",
+                    veg: "Option 1: SHAHI PANEER<br>Option 2: PANEER KHURMA",
+                    nonVeg: "Option 1: CHICKEN BUTTER MASALA<br>Option 2: CHICKEN KASSA",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            },
+            "Sunday": {
+                breakfast: {
+                    option1: "UTTAPAM, SAMBAR & CHUTNEY / BREAD (5 PC), BUTTER (1 PC), JAM (2 PC)",
+                    option2: "CHAKULI, ALOO MASALA, CHUTNEY / BREAD (5 PC), BUTTER (1 PC), JAM (2 PC)",
+                    common: "COFFEE"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, DAHI SALAD, COIN PAPAD",
+                    veg: "CABBAGE GREEN MATAR SABJI",
+                    nonVeg: "Option 1: EGG ALOO CURRY<br>Option 2: EGG MASALA",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "BISCUIT & TEA"
+                },
+                dinner: {
+                    common: "FRIED RICE, ROTI, DAL FRY, BOONDI & PICKLE",
+                    veg: "CHILLI PANEER",
+                    nonVeg: "CHILLI CHICKEN",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            }
+        };
 
-        themeToggleDesktop.addEventListener('click', (e) => {
-            e.stopPropagation();
-            themeMenu.classList.toggle('hidden');
-        });
+        const mealTimings = {
+            breakfast: { name: "Breakfast", start: 7 * 60, end: 10 * 60, display: "07.00 AM to 10.00 AM" },
+            lunch: { name: "Lunch", start: 13 * 60, end: 15 * 60, display: "01.00 PM to 03.00 PM" },
+            snacks: { name: "Evening Snacks", start: 18 * 60, end: 19 * 60, display: "06.00 PM to 07.00 PM" },
+            dinner: { name: "Dinner", start: 20 * 60, end: 22 * 60, display: "08.00 PM to 10.00 PM" }
+        };
+
+        // Icons
+        const icons = {
+            breakfast: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`,
+            lunch: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>`,
+            snacks: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path></svg>`,
+            dinner: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`
+        };
+
+        // Application State
+        let currentMode = 'overview';
+        let selectedHostelId = 'KP-7 (ABC)';
         
-        themeToggleMobile.addEventListener('click', () => {
-            const current = localStorage.getItem('theme') || 'system';
-            let next;
-            if(current === 'light') next = 'dark';
-            else if(current === 'dark') next = 'amoled';
-            else if(current === 'amoled') next = 'system';
-            else next = 'light';
-            setTheme(next);
-        });
+        // Helper: Generate HTML for a meal card
+        function createMealCardHtml(mealKey, mealDetails, timeStr, isActive = false) {
+            const title = mealTimings[mealKey].name;
+            const icon = icons[mealKey];
+            const borderClass = isActive ? 'border-2 border-blue-500 shadow-blue-500/20' : 'border border-gray-200 dark:border-gray-700';
+            const highlightBadge = isActive ? `<span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Ongoing</span>` : '';
+            
+            let detailsHtml = '';
+            for (const [key, val] of Object.entries(mealDetails)) {
+                let label = key.charAt(0).toUpperCase() + key.slice(1);
+                if (label === 'Option1') label = 'Option 1';
+                if (label === 'Option2') label = 'Option 2';
+                if (label === 'NonVeg') label = 'Non-Veg';
+                if (label === 'Healthy') label = 'Healthy Option';
+                if (label === 'Main') label = 'Items';
 
-        themeOptions.forEach(btn => {
-            btn.addEventListener('click', () => {
-                setTheme(btn.dataset.theme);
-            });
-        });
+                // Skip if value is "NONE"
+                if (val.trim().toUpperCase() === "NONE") continue;
 
-        document.addEventListener('click', (e) => {
-            // Close theme menu
-            if (!themeToggleDesktop.contains(e.target) && !themeMenu.contains(e.target)) {
-                themeMenu.classList.add('hidden');
-            }
-            // Close hostel menu
-            if (!hostelDropdownBtn.contains(e.target) && !hostelMenu.contains(e.target)) {
-                hostelMenu.classList.add('hidden');
-                hostelChevron.classList.remove('rotate-180');
-            }
-        });
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (localStorage.getItem('theme') === 'system' || !localStorage.getItem('theme')) {
-                applyTheme('system');
-            }
-        });
-
-        // Hostel Selection
-        selectedHostelText.innerText = currentSelectedHostel;
-
-        hostelDropdownBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            hostelMenu.classList.toggle('hidden');
-            hostelChevron.classList.toggle('rotate-180');
-        });
-
-        hostelOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                currentSelectedHostel = option.dataset.value;
-                selectedHostelText.innerText = currentSelectedHostel;
-                localStorage.setItem('selectedHostel', currentSelectedHostel);
-                
-                hostelMenu.classList.add('hidden');
-                hostelChevron.classList.remove('rotate-180');
-                
-                updateToggleStyle();
-                renderMeals();
-            });
-        });
-
-        function initDaySelector() {
-            daySelectorContainer.innerHTML = '';
-            DAYS.forEach((day, index) => {
-                const btn = document.createElement('button');
-                btn.innerText = day.substring(0, 3);
-                btn.className = `px-4 py-2 text-sm font-medium rounded-lg transition-colors ${index === selectedSpecificDay ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`;
-                btn.onclick = () => {
-                    selectedSpecificDay = index;
-                    initDaySelector();
-                    renderMeals();
-                };
-                daySelectorContainer.appendChild(btn);
-            });
-        }
-
-        btnCurrent.addEventListener('click', () => {
-            viewMode = 'CURRENT';
-            updateToggleStyle();
-            renderMeals();
-        });
-
-        btnToday.addEventListener('click', () => {
-            viewMode = 'TODAY';
-            updateToggleStyle();
-            renderMeals();
-        });
-
-        btnSpecific.addEventListener('click', () => {
-            viewMode = 'SPECIFIC';
-            updateToggleStyle();
-            renderMeals();
-        });
-
-        function updateToggleStyle() {
-            const activeClass = ['bg-white', 'dark:bg-slate-700', 'shadow-sm', 'text-slate-900', 'dark:text-white'];
-            const inactiveClass = ['bg-transparent', 'text-slate-500', 'dark:text-slate-400', 'hover:text-slate-700', 'dark:hover:text-slate-200'];
-
-            [btnCurrent, btnToday, btnSpecific].forEach(btn => {
-                btn.classList.remove(...activeClass, ...inactiveClass);
-            });
-
-            if (viewMode === 'CURRENT') {
-                btnCurrent.classList.add(...activeClass);
-                btnToday.classList.add(...inactiveClass);
-                btnSpecific.classList.add(...inactiveClass);
-                mealsContainer.className = "grid grid-cols-1 max-w-2xl mx-auto w-full gap-6 items-start";
-                daySelectorContainer.classList.add('hidden');
-                daySelectorContainer.classList.remove('flex');
-            } else if (viewMode === 'TODAY') {
-                btnCurrent.classList.add(...inactiveClass);
-                btnToday.classList.add(...activeClass);
-                btnSpecific.classList.add(...inactiveClass);
-                mealsContainer.className = "grid grid-cols-1 md:grid-cols-2 gap-6 items-start";
-                daySelectorContainer.classList.add('hidden');
-                daySelectorContainer.classList.remove('flex');
-            } else {
-                btnCurrent.classList.add(...inactiveClass);
-                btnToday.classList.add(...inactiveClass);
-                btnSpecific.classList.add(...activeClass);
-                mealsContainer.className = "grid grid-cols-1 md:grid-cols-2 gap-6 items-start";
-                if (currentSelectedHostel === 'KP-7(ABC)') {
-                    daySelectorContainer.classList.remove('hidden');
-                    daySelectorContainer.classList.add('flex');
-                }
-            }
-        }
-
-        function getCategoryStyle(label) {
-            const l = label.toLowerCase();
-            if (l.includes('non veg')) return { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400', border: 'border-red-200 dark:border-red-800/50', dot: 'bg-red-500' };
-            if (l.includes('veg') && !l.includes('non')) return { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-400', border: 'border-green-200 dark:border-green-800/50', dot: 'bg-green-500' };
-            if (l.includes('healthy')) return { bg: 'bg-teal-100 dark:bg-teal-900/30', text: 'text-teal-700 dark:text-teal-400', border: 'border-teal-200 dark:border-teal-800/50', dot: 'bg-teal-500' };
-            if (l.includes('option 1') || l.includes('option 2')) return { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-400', border: 'border-blue-200 dark:border-blue-800/50', dot: 'bg-blue-500' };
-            return { bg: 'bg-slate-100 dark:bg-slate-700/50', text: 'text-slate-700 dark:text-slate-300', border: 'border-slate-200 dark:border-slate-700', dot: 'bg-slate-400' };
-        }
-
-        function createMealCard(mealData, isActive, isUpcoming, hideBadges = false) {
-            const timeInfo = MEAL_TIMES[mealData.type];
-            let badgeHtml = '';
-            let ringClass = 'border border-slate-200 dark:border-slate-700';
-
-            if (!hideBadges) {
-                if (isActive) {
-                    badgeHtml = `<span class="absolute -top-3 right-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md animate-pulse">Served Now</span>`;
-                    ringClass = 'ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-slate-900 border-transparent amoled:dark:ring-offset-black';
-                } else if (isUpcoming) {
-                    badgeHtml = `<span class="absolute -top-3 right-4 bg-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">Upcoming</span>`;
-                    ringClass = 'border-2 border-cyan-300 dark:border-cyan-700/50';
-                }
-            }
-
-            const itemsHtml = mealData.items.map(item => {
-                if(item.desc.trim().toUpperCase() === 'NONE') return ''; 
-                
-                const style = getCategoryStyle(item.label);
-                return `
-                    <div class="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 border ${style.border}">
-                        <div class="mt-1.5 w-2.5 h-2.5 rounded-full flex-shrink-0 ${style.dot}"></div>
-                        <div>
-                            <span class="text-xs font-bold uppercase tracking-wider ${style.text}">${item.label}</span>
-                            <p class="text-sm font-medium text-slate-800 dark:text-slate-200 mt-0.5">${item.desc}</p>
+                detailsHtml += `
+                    <div class="mb-4 last:mb-0 border-b border-gray-100 dark:border-gray-800 pb-3 last:pb-0 last:border-0">
+                        <span class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">${label}</span>
+                        <div class="mt-1 font-medium text-gray-800 dark:text-gray-200 text-sm sm:text-base leading-snug">
+                            ${val}
                         </div>
                     </div>
                 `;
-            }).join('');
-
-            let iconSvg = '';
-            if(mealData.type === 'breakfast') {
-                iconSvg = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`;
-            } else if(mealData.type === 'lunch') {
-                iconSvg = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 12a8 8 0 0016 0H4zm2-4h12M9 4v4m6-4v4"></path></svg>`;
-            } else if(mealData.type === 'snacks') {
-                iconSvg = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"></path></svg>`;
-            } else {
-                iconSvg = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`;
             }
 
             return `
-                <div class="meal-card relative bg-white dark:bg-slate-800 rounded-2xl p-5 ${ringClass} flex flex-col h-full transition-colors duration-200">
-                    ${badgeHtml}
-                    <div class="flex items-center gap-3 mb-4 border-b border-slate-100 dark:border-slate-700 pb-4">
-                        <div class="bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 p-2.5 rounded-xl">
-                            ${iconSvg}
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-6 shadow-md transition-all duration-300 ${borderClass} relative h-full flex flex-col">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-blue-50 dark:bg-gray-700 rounded-xl">
+                                ${icon}
+                            </div>
+                            <div>
+                                <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight">${title}</h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">${timeStr}</p>
+                            </div>
                         </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-800 dark:text-white">${timeInfo.name}</h2>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${timeInfo.timeStr}</p>
-                        </div>
+                        ${highlightBadge}
                     </div>
-                    <div class="flex flex-col gap-2 flex-grow">
-                        ${itemsHtml}
+                    <div class="flex-grow">
+                        ${detailsHtml}
                     </div>
                 </div>
             `;
         }
 
-        function renderMeals() {
-            const now = new Date();
-            const currentDayIndex = now.getDay();
-            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+        // Core logic: Render view based on state
+        function renderView() {
+            const container = document.getElementById('contentContainer');
+            const daySelector = document.getElementById('daySelectorWrapper');
+            container.innerHTML = '';
             
-            const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
-            let formattedHours = now.getHours() % 12;
-            formattedHours = formattedHours ? formattedHours : 12;
-            const formattedTime = `${formattedHours.toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${ampm}`;
-            
-            currentDayDisplay.innerText = viewMode === 'SPECIFIC' ? DAYS[selectedSpecificDay] : DAYS[currentDayIndex];
-            currentTimeDisplay.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span>${formattedTime}</span>`;
-
-            mealsContainer.innerHTML = '';
-            nextDayBanner.classList.add('hidden');
-            
-            if (currentSelectedHostel !== 'KP-7(ABC)') {
-                mealsContainer.classList.add('hidden');
-                daySelectorContainer.classList.add('hidden');
-                placeholderContainer.classList.remove('hidden');
-                placeholderContainer.classList.add('flex');
+            if (selectedHostelId !== 'KP-7 (ABC)') {
+                document.getElementById('mainContentArea').classList.add('hidden');
+                document.getElementById('emptyStateArea').classList.remove('hidden');
                 return;
             } else {
-                mealsContainer.classList.remove('hidden');
-                placeholderContainer.classList.add('hidden');
-                placeholderContainer.classList.remove('flex');
-                
-                if (viewMode === 'SPECIFIC') {
-                    daySelectorContainer.classList.remove('hidden');
-                    daySelectorContainer.classList.add('flex');
-                }
+                document.getElementById('mainContentArea').classList.remove('hidden');
+                document.getElementById('emptyStateArea').classList.add('hidden');
             }
 
-            if (viewMode === 'TODAY' || viewMode === 'SPECIFIC') {
-                const targetDay = viewMode === 'TODAY' ? currentDayIndex : selectedSpecificDay;
-                const todaysMeals = MENU[targetDay];
-                const isLookingAtToday = targetDay === currentDayIndex;
+            const now = new Date();
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const currentDayName = days[now.getDay()];
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-                todaysMeals.forEach(mealData => {
-                    const timeInfo = MEAL_TIMES[mealData.type];
-                    const isActive = isLookingAtToday && currentMinutes >= timeInfo.start && currentMinutes <= timeInfo.end;
-                    const isUpcoming = isLookingAtToday && currentMinutes < timeInfo.start; 
-                    
-                    mealsContainer.innerHTML += createMealCard(mealData, isActive, isUpcoming, !isLookingAtToday);
-                });
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            if(currentMode === 'overview') document.getElementById('btnOverview').classList.add('active');
+            if(currentMode === 'today') document.getElementById('btnToday').classList.add('active');
+            if(currentMode === 'all') document.getElementById('btnAll').classList.add('active');
+
+            if (currentMode === 'all') {
+                daySelector.classList.remove('hidden');
+                if(!document.getElementById('daySelect').value) {
+                    document.getElementById('daySelect').value = currentDayName;
+                }
+                renderSpecificDay();
+                return;
             } else {
-                const todaysMeals = MENU[currentDayIndex];
-                let targetMeal = null;
-                let targetDayIndex = currentDayIndex;
-                let isActive = false;
-                let isUpcoming = false;
+                daySelector.classList.add('hidden');
+            }
 
-                for (let meal of todaysMeals) {
-                    const times = MEAL_TIMES[meal.type];
-                    if (currentMinutes >= times.start && currentMinutes <= times.end) {
-                        targetMeal = meal;
-                        isActive = true;
+            const todayMenu = menuData[currentDayName];
+
+            if (currentMode === 'overview') {
+                let targetMealKey = null;
+                let isOngoing = false;
+                let isNextDay = false;
+                
+                const mealKeys = ['breakfast', 'lunch', 'snacks', 'dinner'];
+
+                for (let key of mealKeys) {
+                    let timings = mealTimings[key];
+                    if (currentMinutes >= timings.start && currentMinutes < timings.end) {
+                        targetMealKey = key;
+                        isOngoing = true;
+                        break;
+                    } else if (currentMinutes < timings.start) {
+                        targetMealKey = key;
                         break;
                     }
                 }
 
-                if (!targetMeal) {
-                    for (let meal of todaysMeals) {
-                        const times = MEAL_TIMES[meal.type];
-                        if (currentMinutes < times.start) {
-                            targetMeal = meal;
-                            isUpcoming = true;
-                            break;
-                        }
-                    }
+                let displayDayName = "Today";
+                let displayMenu = todayMenu;
+
+                if (!targetMealKey) {
+                    targetMealKey = 'breakfast';
+                    isNextDay = true;
+                    let nextDayIndex = (now.getDay() + 1) % 7;
+                    displayDayName = "Tomorrow";
+                    displayMenu = menuData[days[nextDayIndex]];
                 }
 
-                if (!targetMeal) {
-                    targetDayIndex = (currentDayIndex + 1) % 7;
-                    targetMeal = MENU[targetDayIndex][0]; 
-                    isUpcoming = true;
-                    
-                    nextDayBanner.classList.remove('hidden');
-                    nextDayBanner.querySelector('span').innerText = `Meals for today have ended. Showing ${DAYS[targetDayIndex]}'s ${MEAL_TIMES[targetMeal.type].name}.`;
-                }
+                let headerHtml = `
+                    <div class="mb-6 flex flex-col items-center">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white text-center">
+                            ${isOngoing ? "Currently Serving" : "Up Next"}
+                        </h2>
+                        <p class="text-gray-500 dark:text-gray-400 mt-1 font-medium">${displayDayName}'s Schedule</p>
+                    </div>
+                `;
+                container.innerHTML = headerHtml + `<div class="max-w-md mx-auto h-full">` + createMealCardHtml(targetMealKey, displayMenu[targetMealKey], mealTimings[targetMealKey].display, isOngoing) + `</div>`;
 
-                if (targetMeal) {
-                    mealsContainer.innerHTML = createMealCard(targetMeal, isActive, isUpcoming);
-                }
+            } else if (currentMode === 'today') {
+                let headerHtml = `
+                    <div class="mb-6 flex flex-col items-center">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white text-center">
+                            Today's Menu
+                        </h2>
+                        <p class="text-gray-500 dark:text-gray-400 mt-1 font-medium">${currentDayName}</p>
+                    </div>
+                `;
+                
+                let cardsHtml = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">`;
+                
+                ['breakfast', 'lunch', 'snacks', 'dinner'].forEach(key => {
+                    let timings = mealTimings[key];
+                    let isOngoing = (currentMinutes >= timings.start && currentMinutes < timings.end);
+                    cardsHtml += createMealCardHtml(key, todayMenu[key], timings.display, isOngoing);
+                });
+                
+                cardsHtml += `</div>`;
+                container.innerHTML = headerHtml + cardsHtml;
             }
         }
 
-        function init() {
-            initDaySelector();
-            updateToggleStyle();
-            renderMeals();
+        function renderSpecificDay() {
+            const selectedDay = document.getElementById('daySelect').value;
+            const container = document.getElementById('contentContainer');
+            const menu = menuData[selectedDay];
 
-            setInterval(() => {
-                const now = new Date();
-                const currentMinute = now.getMinutes();
-                if (currentMinute !== lastMinuteUpdate) {
-                    lastMinuteUpdate = currentMinute;
-                    renderMeals();
-                }
-            }, 1000);
+            let headerHtml = `
+                <div class="mb-6 flex flex-col items-center">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white text-center">
+                        ${selectedDay}'s Menu
+                    </h2>
+                </div>
+            `;
+            
+            let cardsHtml = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">`;
+            
+            ['breakfast', 'lunch', 'snacks', 'dinner'].forEach(key => {
+                let timings = mealTimings[key];
+                cardsHtml += createMealCardHtml(key, menu[key], timings.display, false);
+            });
+            
+            cardsHtml += `</div>`;
+            container.innerHTML = headerHtml + cardsHtml;
         }
 
-        init();
+        function setMode(mode) {
+            currentMode = mode;
+            renderView();
+        }
+
+        function selectHostel(name) {
+            selectedHostelId = name;
+            document.getElementById('selectedHostel').textContent = name;
+            localStorage.setItem('preferredHostel', name);
+            toggleDropdown();
+            renderView();
+        }
+
+        function toggleDropdown() {
+            const content = document.getElementById('dropdownContent');
+            const icon = document.querySelector('#dropdownBtn svg');
+            content.classList.toggle('show');
+            if(content.classList.contains('show')) {
+                icon.classList.add('rotate-180');
+            } else {
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        document.getElementById('dropdownBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown();
+        });
+
+        document.addEventListener('click', (e) => {
+            const content = document.getElementById('dropdownContent');
+            const icon = document.querySelector('#dropdownBtn svg');
+            if (content.classList.contains('show') && !e.target.closest('#hostelDropdownContainer')) {
+                content.classList.remove('show');
+                icon.classList.remove('rotate-180');
+            }
+        });
+
+        function initApp() {
+            const savedHostel = localStorage.getItem('preferredHostel');
+            if(savedHostel) {
+                selectedHostelId = savedHostel;
+                document.getElementById('selectedHostel').textContent = savedHostel;
+            }
+            renderView();
+            setInterval(() => {
+                if(currentMode === 'overview' || currentMode === 'today') {
+                    renderView();
+                }
+            }, 60000);
+        }
+
+        initApp();
     </script>
 </body>
 </html>
