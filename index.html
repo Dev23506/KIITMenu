@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hostel Food Menu</title>
+    <title>Hostel Food Menu - KIIT</title>
     
-    <!-- PWA & Mobile Web App Meta Tags -->
+    <!-- PWA & Mobile Meta Tags -->
     <meta name="theme-color" content="#2563eb">
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Hostel Menu">
-    
-    <!-- App Icons & Manifest embedded via Data URIs -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext y='.9em' font-size='70' x='15'%3E%F0%9F%8D%B1%3C/text%3E%3C/svg%3E">
-    <link rel="manifest" href='data:application/manifest+json,{"name":"KIIT Hostel Food Menu","short_name":"Hostel Menu","description":"KIIT Hostel daily real-time meal timings and food items","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#2563eb","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%232563eb%22/%3E%3Ctext y=%22.9em%22 font-size=%2270%22 x=%2215%22%3E%F0%9F%8D%B1%3C/text%3E%3C/svg%3E","sizes":"192x192 512x512","type":"image/svg+xml"}]}'>
+
+    <!-- Embedded Web App Manifest (Data URI) -->
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiSG9zdGVsIEZvb2QgTWVudSIsInNob3J0X25hbWUiOiJNZW51Iiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwMDAwMDAiLCJ0aGVtZV9jb2xvciI6IiMyNTYzZWIiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sOzslM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgNTEyIDUxMic+PHJlY3Qgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIHJ4PScxMDAnIGZpbGw9JyUyNTYzZWInLz48cGF0aCBmaWxsPScjZmZmJyBkPSdNMjU2IDExMmMtNzkuNSAwLTE0NCA2NC41LTE0NCAxNDRzNjQuNSAxNDQgMTQ0IDE0NCAxNDQtNjQuNSAxNDQtMTQ0LTY0LjUtMTQ0LTE0NC0xNDR6bTcyIDIwNGgtNDR2NDRoLTU2di00NGgtNDR2LTU2aDQ0di00NGg1NnY0NGg0NHY1NnonLz48L3N2Zz4iLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -37,6 +35,7 @@
         }
     </script>
     <style>
+        /* Custom styles for AMOLED Dark Theme */
         html[data-theme="amoled"] {
             color-scheme: dark;
         }
@@ -99,40 +98,41 @@
     <div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
         
         <!-- Header & Controls -->
-        <div class="flex justify-between items-center mb-8 relative flex-wrap gap-3">
+        <div class="flex justify-between items-center mb-6 relative gap-2">
             
             <!-- Custom Hostel Dropdown -->
-            <div class="relative w-48 sm:w-64" id="hostelDropdownContainer">
-                <button id="dropdownBtn" class="w-full flex justify-between items-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-3 rounded-xl shadow-sm text-left font-bold text-lg sm:text-xl text-blue-600 dark:text-blue-400 focus:outline-none transition-colors">
-                    <span id="selectedHostel">KP-7 (ABC)</span>
-                    <svg class="w-5 h-5 ml-2 transition-transform duration-200 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            <div class="relative w-52 sm:w-64" id="hostelDropdownContainer">
+                <button id="dropdownBtn" class="w-full flex justify-between items-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-3 sm:px-4 py-2.5 rounded-xl shadow-sm text-left font-bold text-base sm:text-lg text-blue-600 dark:text-blue-400 focus:outline-none transition-colors">
+                    <span id="selectedHostel" class="truncate">KP-7 (ABCDEF)</span>
+                    <svg class="w-5 h-5 ml-2 shrink-0 transition-transform duration-200 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div id="dropdownContent" class="dropdown-content bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('KP-7 (ABC)')">KP-7 (ABC)</button>
+                    <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('KP-7 (ABCDEF)')">KP-7 (ABCDEF)</button>
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 4')">QC 4</button>
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 12')">QC 12</button>
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium" onclick="selectHostel('KP 14')">KP 14</button>
                 </div>
             </div>
             
-            <!-- Install App & Theme Controls -->
+            <!-- Right actions: Install App & Themes -->
             <div class="flex items-center space-x-2">
-                <!-- Install App Button (Hidden by default, shown via PWA prompt listener) -->
-                <button id="installAppBtn" onclick="installPWA()" class="hidden flex items-center space-x-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm px-3.5 py-2 rounded-full shadow-sm transition-colors">
+                <!-- PWA Install Button -->
+                <button id="pwaInstallBtn" onclick="installPWA()" class="hidden items-center space-x-1 sm:space-x-1.5 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-transform active:scale-95">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    <span>Install App</span>
+                    <span class="hidden sm:inline">Install</span>
+                    <span class="sm:hidden">App</span>
                 </button>
 
                 <!-- Theme Selector -->
-                <div class="flex items-center space-x-1 sm:space-x-2 bg-white dark:bg-gray-800 p-1.5 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
-                    <button onclick="setTheme('light')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Light Mode">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <div class="flex items-center space-x-1 bg-white dark:bg-gray-800 p-1 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                    <button onclick="setTheme('light')" class="p-2 rounded-lg text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Light Mode">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                     </button>
-                    <button onclick="setTheme('dark')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Dark Mode">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    <button onclick="setTheme('dark')" class="p-2 rounded-lg text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Dark Mode">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
-                    <button onclick="setTheme('amoled')" class="p-2 rounded-full text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="AMOLED Dark Mode">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"></path></svg>
+                    <button onclick="setTheme('amoled')" class="p-2 rounded-lg text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="AMOLED Pitch Black">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"></path></svg>
                     </button>
                 </div>
             </div>
@@ -140,7 +140,7 @@
 
         <div id="mainContentArea">
             <!-- Navigation & Day Selector -->
-            <div class="mb-8 flex flex-col items-center">
+            <div class="mb-6 flex flex-col items-center">
                 <!-- Modes -->
                 <div class="flex justify-center space-x-2 bg-gray-200 dark:bg-gray-800 p-1.5 rounded-2xl mb-4 shadow-inner w-full sm:w-auto">
                     <button id="btnOverview" onclick="setMode('overview')" class="nav-btn flex-1 sm:flex-none px-4 sm:px-6 py-2.5 rounded-xl font-semibold text-sm sm:text-base text-gray-700 dark:text-gray-300">Overview</button>
@@ -163,86 +163,49 @@
             </div>
 
             <!-- Dynamic Content Container -->
-            <div id="contentContainer" class="min-h-[400px]">
-                <!-- Content injected via JS -->
+            <div id="contentContainer" class="min-h-[380px]">
+                <!-- Cards injected here via JS -->
+            </div>
+
+            <!-- Footer: Hostel Portion Guidelines & Medical Notes -->
+            <div class="mt-10 p-5 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs sm:text-sm text-gray-600 dark:text-gray-400 space-y-2">
+                <div class="flex items-start space-x-2">
+                    <span class="text-blue-500 font-bold">•</span>
+                    <p><strong class="text-gray-800 dark:text-gray-200">Applicable Quantities:</strong> Banana (1 pc), Egg (2 pcs), Chicken (4 pcs), Fish (2 pcs), Vegetable Chop (2 pcs), Piazi (2 pcs).</p>
+                </div>
+                <div class="flex items-start space-x-2">
+                    <span class="text-blue-500 font-bold">•</span>
+                    <p><strong class="text-gray-800 dark:text-gray-200">Sick Boarders:</strong> Khichdi / Mix Boiled Vegetables provided upon prior notice.</p>
+                </div>
+                <div class="text-right text-[11px] text-gray-400 dark:text-gray-500 pt-1">
+                    W.E.F. 24.08.2026 • KP-7 (ABCDEF)
+                </div>
             </div>
         </div>
         
         <!-- Empty State Container -->
         <div id="emptyStateArea" class="hidden flex flex-col items-center justify-center py-20 text-center">
-            <svg class="w-24 h-24 text-gray-300 dark:text-gray-700 mb-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+            <svg class="w-20 h-20 text-gray-300 dark:text-gray-700 mb-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
             <h2 class="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-2">Cooking your menu...</h2>
-            <p class="text-gray-500 dark:text-gray-500">The menu for this hostel hasn't been uploaded yet.</p>
+            <p class="text-gray-500 dark:text-gray-400">The timetable for this hostel has not been uploaded yet.</p>
         </div>
     </div>
 
-    <!-- PWA Install Modal / Instructions (For iOS) -->
-    <div id="iosInstallModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-sm w-full shadow-xl text-center border border-gray-200 dark:border-gray-700">
-            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                📲
-            </div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Install on iOS</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-                To install this web app on your iPhone or iPad:
+    <!-- iOS Install Help Modal -->
+    <div id="iosModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-end sm:items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-gray-200 dark:border-gray-700 text-center">
+            <h3 class="text-lg font-bold mb-2 text-gray-900 dark:text-white">Install on iPhone / iPad</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                Tap Safari's <span class="font-bold text-blue-500">Share</span> button <svg class="inline w-4 h-4 mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg> below, then select <strong class="text-gray-900 dark:text-white">"Add to Home Screen"</strong>.
             </p>
-            <ol class="text-xs sm:text-sm text-left text-gray-600 dark:text-gray-300 space-y-2 mb-6 bg-gray-50 dark:bg-gray-900 p-3 rounded-xl">
-                <li class="flex items-center space-x-2">
-                    <span class="font-bold">1.</span>
-                    <span>Tap the <strong>Share</strong> button at the bottom of Safari.</span>
-                </li>
-                <li class="flex items-center space-x-2">
-                    <span class="font-bold">2.</span>
-                    <span>Scroll down and tap <strong>Add to Home Screen</strong>.</span>
-                </li>
-            </ol>
-            <button onclick="document.getElementById('iosInstallModal').classList.add('hidden')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl hover:bg-blue-700 transition-colors">
-                Got it
-            </button>
+            <button onclick="closeIosModal()" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl hover:bg-blue-700">Got it</button>
         </div>
     </div>
 
     <script>
-        let deferredPrompt = null;
-
-        // Listen for browser install prompt (Android, Chrome, Edge)
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const btn = document.getElementById('installAppBtn');
-            if (btn) btn.classList.remove('hidden');
-        });
-
-        // Trigger installation logic
-        function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        document.getElementById('installAppBtn').classList.add('hidden');
-                    }
-                    deferredPrompt = null;
-                });
-            } else {
-                // Check if iOS
-                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-                if (isIOS) {
-                    document.getElementById('iosInstallModal').classList.remove('hidden');
-                } else {
-                    alert("App is already installed or your browser doesn't support direct web app installation.");
-                }
-            }
-        }
-
-        window.addEventListener('appinstalled', () => {
-            const btn = document.getElementById('installAppBtn');
-            if (btn) btn.classList.add('hidden');
-            deferredPrompt = null;
-        });
-
+        // -- Theme Management --
         function setTheme(themeName) {
             localStorage.setItem('preferredTheme', themeName);
-            
             const html = document.documentElement;
             html.classList.remove('dark');
             html.removeAttribute('data-theme');
@@ -265,158 +228,156 @@
         }
         initTheme();
 
+        // -- Updated Menu Data (W.E.F 24.08.2026 for KP-7 ABCDEF) --
         const menuData = {
             "Monday": {
                 breakfast: {
-                    option1: "CHOLE BHATURE / CORNFLAKES WITH MILK & BANANA",
-                    option2: "PURI, ALOO DUM / CORNFLAKES WITH MILK & BANANA",
+                    options: "CHOLEY BHATURA / PURI ALOO CURRY / CORN FLAKES WITH MILK & BANANA",
                     common: "COFFEE"
                 },
                 lunch: {
-                    common: "RICE, ROTI, DAL, PLAIN CURD",
-                    veg: "Option 1: VEG KOLHAPURI, FRENCH FRIES<br>Option 2: ALOO PARWAL KASSA, MIX BHAJA",
+                    common: "RICE, ROTI, DAL, PLAIN CURD, PICKLE",
+                    veg: "VEG KOLHAPURI / ALOO PARWAL KASSA<br>MIX BHAJA / FRENCH FRIES",
                     nonVeg: "NONE",
                     healthy: "MIXED BOILED VEGETABLES"
                 },
                 snacks: {
-                    main: "VEGETABLE CHOP & TEA"
+                    main: "VEGETABLE CHOP (2 PCS), KETCHUP, TEA"
                 },
                 dinner: {
-                    common: "RICE, ROTI, DAL, MIX BHAJA",
-                    veg: "Option 1: MUTTER PANEER, SEMIYA KHEER<br>Option 2: KADHAI PANEER, RICE KHEER",
+                    common: "RICE, ROTI, DAL FRY, MIX BHAJA, PICKLE",
+                    veg: "MUTTER PANEER / KADHAI PANEER",
+                    dessert: "SEMIYA KHEER / RICE KHEER",
                     nonVeg: "NONE",
                     healthy: "MIXED BOILED VEGETABLES"
                 }
             },
             "Tuesday": {
                 breakfast: {
-                    option1: "IDLI, SAMBAR & CHUTNEY / BREAD (5 PC), BUTTER (1 PC), JAM (2 PC)",
-                    option2: "UPMA & GHUGUNI / BREAD (5 PC), BUTTER (1 PC), JAM (2 PC)",
+                    options: "IDLI, SAMBAR, CHUTNEY / POHA GHUGUNI / CORN FLAKES WITH MILK & BANANA",
                     common: "COFFEE"
                 },
                 lunch: {
-                    common: "RICE, ROTI, DAL, TOMATO CHUTNEY",
-                    veg: "Option 1: MALAI KOFTA, COIN PAPAD<br>Option 2: BHINDI ALOO MASALA, SALAD",
-                    nonVeg: "Option 1: EGG CURRY<br>Option 2: EGG KALIA",
+                    common: "RICE, ROTI, DAL, TOMATO KHATA MEETHA, COIN PAPAD, SALAD",
+                    veg: "MALAI KOFTA / BHINDI ALOO MASALA",
+                    nonVeg: "EGG CURRY (2 PCS) / EGG KALIA (2 PCS)",
                     healthy: "MIXED BOILED VEGETABLES"
                 },
                 snacks: {
                     main: "SPROUT CHAAT & TEA"
                 },
                 dinner: {
-                    common: "FRIED RICE, ROTI, GULAB JAMUN & PICKLE",
-                    veg: "VEG TADKA",
+                    common: "FRIED RICE, ROTI, MIX BHAJA, PICKLE",
+                    veg: "RAJMA MASALA / VEG JAIPURI",
+                    dessert: "GULAB JAMUN",
                     nonVeg: "NONE",
                     healthy: "MIXED BOILED VEGETABLES"
                 }
             },
             "Wednesday": {
                 breakfast: {
-                    option1: "BREAD (5 PC), BUTTER (1 PC), JAM (2 PC) / BOILED EGG (2 PC)",
-                    option2: "BREAD (5 PC), BUTTER (1 PC), JAM (2 PC) / VEG CHOP (2 PC)",
-                    common: "TEA"
+                    options: "BREAD (5 PCS), BUTTER (1 PC), JAM (1 PC) with<br>BOILED EGG (2 PCS) OR VEG CUTLET",
+                    common: "KETCHUP, TEA"
                 },
                 lunch: {
-                    common: "RICE, ROTI, DAL, NALI PAPAD, ALOO BHARTA & PICKLE",
+                    common: "RICE, ROTI, DAL, ALOO BHARTA, NALI PAPAD, PICKLE",
                     veg: "VEG MANCHURIAN",
-                    nonVeg: "Option 1: FISH KALIA<br>Option 2: FISH HOME STYLE WITH POTATO",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "PACKET BISCUIT (SMALL) & TEA"
-                },
-                dinner: {
-                    common: "RICE, ROTI, DAL, SALAD & PICKLE",
-                    veg: "Option 1: PANEER BHURJI<br>Option 2: PANEER HYDERABADI",
-                    nonVeg: "Option 1: CHICKEN HOME STYLE CURRY<br>Option 2: CHICKEN HYDERABADI",
-                    healthy: "MIXED BOILED VEGETABLES"
-                }
-            },
-            "Thursday": {
-                breakfast: {
-                    option1: "VEG CHOWMEIN / CORNFLAKES WITH MILK & BANANA",
-                    option2: "VEG PASTA / CORNFLAKES WITH MILK & BANANA",
-                    common: "TEA"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, DAHI KADHI, PAPAD",
-                    veg: "Option 1: PUNJABI CHOLE MASALA<br>Option 2: NAVRATNA KORMA",
-                    nonVeg: "NONE",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "PAPDI CHAAT & TEA"
-                },
-                dinner: {
-                    common: "RICE, PURI, ICE CREAM & PICKLE",
-                    veg: "CHANA DAL NARIYAL CURRY, ALOO DUM",
-                    nonVeg: "NONE",
-                    healthy: "MIXED BOILED VEGETABLES"
-                }
-            },
-            "Friday": {
-                breakfast: {
-                    option1: "BREAD (5 PC), BUTTER (1 PC), JAM (2 PC) / BOILED EGG (2 PC)",
-                    option2: "BREAD (5 PC), BUTTER (1 PC), JAM (2 PC) / VEG CUTLET (2 PC)",
-                    common: "TEA"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, ALOO KARELA CHIPS & PICKLE",
-                    veg: "VEG JHALFRY WITH PANEER",
-                    nonVeg: "FISH MUSTARD",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "MIXTURE JHAL MURI & COFFEE"
-                },
-                dinner: {
-                    common: "DAHI RAITA",
-                    veg: "VEG BIRYANI, PANEER BUTTER MASALA",
-                    nonVeg: "CHICKEN BIRYANI",
-                    healthy: "MIXED BOILED VEGETABLES"
-                }
-            },
-            "Saturday": {
-                breakfast: {
-                    option1: "VADA, GHUGUNI / CORNFLAKES WITH MILK & BANANA",
-                    option2: "DAHI VADA, ALOO DUM / CORNFLAKES WITH MILK & BANANA",
-                    common: "COFFEE"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, DAHI BOONDI, SRIRAM PAPAD",
-                    veg: "Option 1: RAJMA ALOO MASALA<br>Option 2: SOYABEAN ALOO CURRY",
-                    nonVeg: "NONE",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "VEG PAKODI & TEA"
-                },
-                dinner: {
-                    common: "RICE, ROTI, DAL, KHEERA GAJA & PICKLE",
-                    veg: "Option 1: SHAHI PANEER<br>Option 2: PANEER KHURMA",
-                    nonVeg: "Option 1: CHICKEN BUTTER MASALA<br>Option 2: CHICKEN KASSA",
-                    healthy: "MIXED BOILED VEGETABLES"
-                }
-            },
-            "Sunday": {
-                breakfast: {
-                    option1: "UTTAPAM, SAMBAR & CHUTNEY / BREAD (5 PC), BUTTER (1 PC), JAM (2 PC)",
-                    option2: "CHAKULI, ALOO MASALA, CHUTNEY / BREAD (5 PC), BUTTER (1 PC), JAM (2 PC)",
-                    common: "COFFEE"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, DAHI SALAD, COIN PAPAD",
-                    veg: "CABBAGE GREEN MATAR SABJI",
-                    nonVeg: "Option 1: EGG ALOO CURRY<br>Option 2: EGG MASALA",
+                    nonVeg: "FISH KALIA (2 PCS) / FISH HOMESTYLE WITH POTATO (2 PCS)",
                     healthy: "MIXED BOILED VEGETABLES"
                 },
                 snacks: {
                     main: "BISCUIT & TEA"
                 },
                 dinner: {
-                    common: "FRIED RICE, ROTI, DAL FRY, BOONDI & PICKLE",
+                    common: "RICE, ROTI, DAL, SALAD, PICKLE",
+                    veg: "PANEER BHURJI / PANEER BHARTA",
+                    nonVeg: "CHICKEN HOMESTYLE CURRY (4 PCS) / CHICKEN HYDERABADI (4 PCS)",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            },
+            "Thursday": {
+                breakfast: {
+                    options: "VEG CHOWMEIN / VEG PASTA / CORN FLAKES WITH MILK & BANANA",
+                    common: "TEA"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, DAHI KADHI, NALI PAPAD, PICKLE",
+                    veg: "PUNJABI CHOLE MASALA / NAVRATNA KORMA",
+                    nonVeg: "NONE",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "CHAAT PAPDI & TEA"
+                },
+                dinner: {
+                    common: "RICE, PURI, PICKLE",
+                    veg: "CHANA DAL NARIYAL CURRY, ALOO DUM",
+                    dessert: "ICE CREAM / FRUIT CUSTARD",
+                    nonVeg: "NONE",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            },
+            "Friday": {
+                breakfast: {
+                    options: "BREAD (5 PCS), BUTTER (1 PC), JAM (1 PC) with<br>BOILED EGG (2 PCS) OR VEG CUTLET",
+                    common: "KETCHUP, TEA"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, ALOO KARELA CHIPS, PICKLE",
+                    veg: "VEG JHALFRY WITH PANEER",
+                    nonVeg: "FISH MUSTARD (2 PCS) / FISH PUNJABI (2 PCS)",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "JHAL MURI & COFFEE"
+                },
+                dinner: {
+                    common: "DAHI RAITA",
+                    veg: "VEG BIRYANI, PANEER BUTTER MASALA",
+                    nonVeg: "CHICKEN BIRYANI (4 PCS)",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            },
+            "Saturday": {
+                breakfast: {
+                    options: "VADA, GHUGUNI / DAHI VADA, ALOO DUM / CORN FLAKES WITH MILK & BANANA",
+                    common: "COFFEE"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, ALOO CHOKHA, PLAIN CURD, SRIRAM PAPAD, PICKLE",
+                    veg: "SOYABEAN ALOO CURRY / BESAN ALOO CURRY",
+                    nonVeg: "NONE",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "PAKODI (VEG), KETCHUP, TEA"
+                },
+                dinner: {
+                    common: "RICE, ROTI, DAL, KHEERA GAJA, PICKLE",
+                    veg: "SHAHI PANEER / PANEER KHURMA",
+                    nonVeg: "CHICKEN BUTTER MASALA (4 PCS) / CHICKEN KASSA (4 PCS)",
+                    healthy: "MIXED BOILED VEGETABLES"
+                }
+            },
+            "Sunday": {
+                breakfast: {
+                    options: "UTTAPAM, SAMBAR, CHUTNEY / CHAKULI, ALOO MASALA, CHUTNEY / BREAD (5 PCS), BUTTER (1 PC), JAM (1 PC)",
+                    common: "COFFEE"
+                },
+                lunch: {
+                    common: "RICE, ROTI, DAL, DAHI SALAD, COIN PAPAD, PICKLE",
+                    veg: "CABBAGE GREEN MATAR ALOO CURRY",
+                    nonVeg: "EGG CURRY WITH POTATO (2 PCS) / EGG MASALA (2 PCS)",
+                    healthy: "MIXED BOILED VEGETABLES"
+                },
+                snacks: {
+                    main: "MAGGI / PIAZI (2 PCS), KETCHUP, TEA"
+                },
+                dinner: {
+                    common: "FRIED RICE, ROTI, DAL FRY",
                     veg: "CHILLI PANEER",
-                    nonVeg: "CHILLI CHICKEN",
+                    nonVeg: "CHILLI CHICKEN (4 PCS)",
+                    dessert: "BOONDI / ICE CREAM",
                     healthy: "MIXED BOILED VEGETABLES"
                 }
             }
@@ -429,15 +390,17 @@
             dinner: { name: "Dinner", start: 20 * 60, end: 22 * 60, display: "08.00 PM to 10.00 PM" }
         };
 
+        // Icons
         const icons = {
             breakfast: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`,
             lunch: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>`,
-            snacks: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path></svg>`,
+            snacks: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path></svg>`,
             dinner: `<svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`
         };
 
+        // State
         let currentMode = 'overview';
-        let selectedHostelId = 'KP-7 (ABC)';
+        let selectedHostelId = 'KP-7 (ABCDEF)';
         
         function createMealCardHtml(mealKey, mealDetails, timeStr, isActive = false) {
             const title = mealTimings[mealKey].name;
@@ -448,16 +411,16 @@
             let detailsHtml = '';
             for (const [key, val] of Object.entries(mealDetails)) {
                 let label = key.charAt(0).toUpperCase() + key.slice(1);
-                if (label === 'Option1') label = 'Option 1';
-                if (label === 'Option2') label = 'Option 2';
                 if (label === 'NonVeg') label = 'Non-Veg';
                 if (label === 'Healthy') label = 'Healthy Option';
-                if (label === 'Main') label = 'Items';
+                if (label === 'Dessert') label = 'Dessert / Sweet';
+                if (label === 'Main') label = 'Snacks & Beverage';
+                if (label === 'Options') label = 'Choices';
 
                 if (val.trim().toUpperCase() === "NONE") continue;
 
                 detailsHtml += `
-                    <div class="mb-4 last:mb-0 border-b border-gray-100 dark:border-gray-800 pb-3 last:pb-0 last:border-0">
+                    <div class="mb-3.5 last:mb-0 border-b border-gray-100 dark:border-gray-800 pb-3 last:pb-0 last:border-0">
                         <span class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">${label}</span>
                         <div class="mt-1 font-medium text-gray-800 dark:text-gray-200 text-sm sm:text-base leading-snug">
                             ${val}
@@ -467,15 +430,15 @@
             }
 
             return `
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-6 shadow-md transition-all duration-300 ${borderClass} relative h-full flex flex-col">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all duration-200 ${borderClass} relative h-full flex flex-col">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex items-center space-x-3">
-                            <div class="p-2 bg-blue-50 dark:bg-gray-700 rounded-xl">
+                            <div class="p-2.5 bg-blue-50 dark:bg-gray-700 rounded-xl">
                                 ${icon}
                             </div>
                             <div>
                                 <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight">${title}</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">${timeStr}</p>
+                                <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">${timeStr}</p>
                             </div>
                         </div>
                         ${highlightBadge}
@@ -492,7 +455,7 @@
             const daySelector = document.getElementById('daySelectorWrapper');
             container.innerHTML = '';
             
-            if (selectedHostelId !== 'KP-7 (ABC)') {
+            if (selectedHostelId !== 'KP-7 (ABCDEF)' && selectedHostelId !== 'KP-7 (ABC)') {
                 document.getElementById('mainContentArea').classList.add('hidden');
                 document.getElementById('emptyStateArea').classList.remove('hidden');
                 return;
@@ -649,41 +612,65 @@
             }
         });
 
-        // Service Worker Registration for PWA caching & installability
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                const swCode = `
-                    const CACHE_NAME = 'hostel-menu-v1';
-                    self.addEventListener('install', (e) => self.skipWaiting());
-                    self.addEventListener('activate', (e) => e.waitUntil(clients.claim()));
-                    self.addEventListener('fetch', (e) => {
-                        e.respondWith(
-                            fetch(e.request).catch(() => caches.match(e.request))
-                        );
-                    });
-                `;
-                const blob = new Blob([swCode], { type: 'text/javascript' });
-                navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(err => {
-                    console.log('SW registration note:', err.message);
-                });
-            });
+        // -- PWA Install Trigger Logic --
+        let deferredPrompt = null;
+        const installBtn = document.getElementById('pwaInstallBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.classList.remove('hidden');
+            installBtn.classList.add('flex');
+        });
+
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         }
 
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => {
+                    deferredPrompt = null;
+                    installBtn.classList.add('hidden');
+                    installBtn.classList.remove('flex');
+                });
+            } else if (isIOS()) {
+                document.getElementById('iosModal').classList.remove('hidden');
+            }
+        }
+
+        function closeIosModal() {
+            document.getElementById('iosModal').classList.add('hidden');
+        }
+
+        // Show install button on iOS Safari if not already running in standalone mode
+        if (isIOS() && !window.navigator.standalone) {
+            installBtn.classList.remove('hidden');
+            installBtn.classList.add('flex');
+        }
+
+        // -- Service Worker Registration (Blob URL) --
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                self.addEventListener('install', (e) => self.skipWaiting());
+                self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
+                self.addEventListener('fetch', (e) => {});
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+        }
+
+        // App Initializer
         function initApp() {
             const savedHostel = localStorage.getItem('preferredHostel');
             if(savedHostel) {
-                selectedHostelId = savedHostel;
-                document.getElementById('selectedHostel').textContent = savedHostel;
+                // Migrate older name if stored
+                selectedHostelId = (savedHostel === 'KP-7 (ABC)') ? 'KP-7 (ABCDEF)' : savedHostel;
+                document.getElementById('selectedHostel').textContent = selectedHostelId;
             }
-            
-            // Check if iOS to display install button if applicable
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-            if (isIOS && !isStandalone) {
-                document.getElementById('installAppBtn').classList.remove('hidden');
-            }
-
             renderView();
+            // Automatically refresh every minute to update current serving meal
             setInterval(() => {
                 if(currentMode === 'overview' || currentMode === 'today') {
                     renderView();
