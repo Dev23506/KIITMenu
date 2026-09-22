@@ -108,6 +108,7 @@
                 </button>
                 <div id="dropdownContent" class="dropdown-content bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 overflow-hidden">
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('KP-7 (ABCDEF)')">KP-7 (ABCDEF)</button>
+                    <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 18')">QC 18</button>
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 4')">QC 4</button>
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 12')">QC 12</button>
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium" onclick="selectHostel('KP 14')">KP 14</button>
@@ -168,18 +169,8 @@
             </div>
 
             <!-- Footer: Hostel Portion Guidelines & Medical Notes -->
-            <div class="mt-10 p-5 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs sm:text-sm text-gray-600 dark:text-gray-400 space-y-2">
-                <div class="flex items-start space-x-2">
-                    <span class="text-blue-500 font-bold">•</span>
-                    <p><strong class="text-gray-800 dark:text-gray-200">Applicable Quantities:</strong> Banana (1 pc), Egg (2 pcs), Chicken (4 pcs), Fish (2 pcs), Vegetable Chop (2 pcs), Piazi (2 pcs).</p>
-                </div>
-                <div class="flex items-start space-x-2">
-                    <span class="text-blue-500 font-bold">•</span>
-                    <p><strong class="text-gray-800 dark:text-gray-200">Sick Boarders:</strong> Khichdi / Mix Boiled Vegetables provided upon prior notice.</p>
-                </div>
-                <div class="text-right text-[11px] text-gray-400 dark:text-gray-500 pt-1">
-                    W.E.F. 24.08.2026 • KP-7 (ABCDEF)
-                </div>
+            <div id="footerInfoContainer" class="mt-10 p-5 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs sm:text-sm text-gray-600 dark:text-gray-400 space-y-2">
+                <!-- Dynamically populated via renderFooter() -->
             </div>
         </div>
         
@@ -228,157 +219,326 @@
         }
         initTheme();
 
-        // -- Updated Menu Data (W.E.F 24.08.2026 for KP-7 ABCDEF) --
-        const menuData = {
-            "Monday": {
-                breakfast: {
-                    options: "CHOLEY BHATURA / PURI ALOO CURRY / CORN FLAKES WITH MILK & BANANA",
-                    common: "COFFEE"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, PLAIN CURD, PICKLE",
-                    veg: "VEG KOLHAPURI / ALOO PARWAL KASSA<br>MIX BHAJA / FRENCH FRIES",
-                    nonVeg: "NONE",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "VEGETABLE CHOP (2 PCS), KETCHUP, TEA"
-                },
-                dinner: {
-                    common: "RICE, ROTI, DAL FRY, MIX BHAJA, PICKLE",
-                    veg: "MUTTER PANEER / KADHAI PANEER",
-                    dessert: "SEMIYA KHEER / RICE KHEER",
-                    nonVeg: "NONE",
-                    healthy: "MIXED BOILED VEGETABLES"
+        const hostelMenus = {
+            "KP-7 (ABCDEF)": {
+                name: "KP-7 (ABCDEF)",
+                wef: "W.E.F. 24.08.2026 • KP-7 (ABCDEF)",
+                notes: [
+                    "<strong>Applicable Quantities:</strong> Banana (1 pc), Egg (2 pcs), Chicken (4 pcs), Fish (2 pcs), Vegetable Chop (2 pcs), Piazi (2 pcs).",
+                    "<strong>Sick Boarders:</strong> Khichdi / Mix Boiled Vegetables provided upon prior notice."
+                ],
+                menu: {
+                    "Monday": {
+                        breakfast: {
+                            options: "CHOLEY BHATURA / PURI ALOO CURRY / CORN FLAKES WITH MILK & BANANA",
+                            common: "COFFEE"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, PLAIN CURD, PICKLE",
+                            veg: "VEG KOLHAPURI / ALOO PARWAL KASSA<br>MIX BHAJA / FRENCH FRIES",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "VEGETABLE CHOP (2 PCS), KETCHUP, TEA"
+                        },
+                        dinner: {
+                            common: "RICE, ROTI, DAL FRY, MIX BHAJA, PICKLE",
+                            veg: "MUTTER PANEER / KADHAI PANEER",
+                            dessert: "SEMIYA KHEER / RICE KHEER",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Tuesday": {
+                        breakfast: {
+                            options: "IDLI, SAMBAR, CHUTNEY / POHA GHUGUNI / CORN FLAKES WITH MILK & BANANA",
+                            common: "COFFEE"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, TOMATO KHATA MEETHA, COIN PAPAD, SALAD",
+                            veg: "MALAI KOFTA / BHINDI ALOO MASALA",
+                            nonVeg: "EGG CURRY (2 PCS) / EGG KALIA (2 PCS)",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "SPROUT CHAAT & TEA"
+                        },
+                        dinner: {
+                            common: "FRIED RICE, ROTI, MIX BHAJA, PICKLE",
+                            veg: "RAJMA MASALA / VEG JAIPURI",
+                            dessert: "GULAB JAMUN",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Wednesday": {
+                        breakfast: {
+                            options: "BREAD (5 PCS), BUTTER (1 PC), JAM (1 PC) with<br>BOILED EGG (2 PCS) OR VEG CUTLET",
+                            common: "KETCHUP, TEA"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, ALOO BHARTA, NALI PAPAD, PICKLE",
+                            veg: "VEG MANCHURIAN",
+                            nonVeg: "FISH KALIA (2 PCS) / FISH HOMESTYLE WITH POTATO (2 PCS)",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "BISCUIT & TEA"
+                        },
+                        dinner: {
+                            common: "RICE, ROTI, DAL, SALAD, PICKLE",
+                            veg: "PANEER BHURJI / PANEER BHARTA",
+                            nonVeg: "CHICKEN HOMESTYLE CURRY (4 PCS) / CHICKEN HYDERABADI (4 PCS)",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Thursday": {
+                        breakfast: {
+                            options: "VEG CHOWMEIN / VEG PASTA / CORN FLAKES WITH MILK & BANANA",
+                            common: "TEA"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, DAHI KADHI, NALI PAPAD, PICKLE",
+                            veg: "PUNJABI CHOLE MASALA / NAVRATNA KORMA",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "CHAAT PAPDI & TEA"
+                        },
+                        dinner: {
+                            common: "RICE, PURI, PICKLE",
+                            veg: "CHANA DAL NARIYAL CURRY, ALOO DUM",
+                            dessert: "ICE CREAM / FRUIT CUSTARD",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Friday": {
+                        breakfast: {
+                            options: "BREAD (5 PCS), BUTTER (1 PC), JAM (1 PC) with<br>BOILED EGG (2 PCS) OR VEG CUTLET",
+                            common: "KETCHUP, TEA"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, ALOO KARELA CHIPS, PICKLE",
+                            veg: "VEG JHALFRY WITH PANEER",
+                            nonVeg: "FISH MUSTARD (2 PCS) / FISH PUNJABI (2 PCS)",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "JHAL MURI & COFFEE"
+                        },
+                        dinner: {
+                            common: "DAHI RAITA",
+                            veg: "VEG BIRYANI, PANEER BUTTER MASALA",
+                            nonVeg: "CHICKEN BIRYANI (4 PCS)",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Saturday": {
+                        breakfast: {
+                            options: "VADA, GHUGUNI / DAHI VADA, ALOO DUM / CORN FLAKES WITH MILK & BANANA",
+                            common: "COFFEE"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, ALOO CHOKHA, PLAIN CURD, SRIRAM PAPAD, PICKLE",
+                            veg: "SOYABEAN ALOO CURRY / BESAN ALOO CURRY",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "PAKODI (VEG), KETCHUP, TEA"
+                        },
+                        dinner: {
+                            common: "RICE, ROTI, DAL, KHEERA GAJA, PICKLE",
+                            veg: "SHAHI PANEER / PANEER KHURMA",
+                            nonVeg: "CHICKEN BUTTER MASALA (4 PCS) / CHICKEN KASSA (4 PCS)",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Sunday": {
+                        breakfast: {
+                            options: "UTTAPAM, SAMBAR, CHUTNEY / CHAKULI, ALOO MASALA, CHUTNEY / BREAD (5 PCS), BUTTER (1 PC), JAM (1 PC)",
+                            common: "COFFEE"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, DAHI SALAD, COIN PAPAD, PICKLE",
+                            veg: "CABBAGE GREEN MATAR ALOO CURRY",
+                            nonVeg: "EGG CURRY WITH POTATO (2 PCS) / EGG MASALA (2 PCS)",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "MAGGI / PIAZI (2 PCS), KETCHUP, TEA"
+                        },
+                        dinner: {
+                            common: "FRIED RICE, ROTI, DAL FRY",
+                            veg: "CHILLI PANEER",
+                            nonVeg: "CHILLI CHICKEN (4 PCS)",
+                            dessert: "BOONDI / ICE CREAM",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    }
                 }
             },
-            "Tuesday": {
-                breakfast: {
-                    options: "IDLI, SAMBAR, CHUTNEY / POHA GHUGUNI / CORN FLAKES WITH MILK & BANANA",
-                    common: "COFFEE"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, TOMATO KHATA MEETHA, COIN PAPAD, SALAD",
-                    veg: "MALAI KOFTA / BHINDI ALOO MASALA",
-                    nonVeg: "EGG CURRY (2 PCS) / EGG KALIA (2 PCS)",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "SPROUT CHAAT & TEA"
-                },
-                dinner: {
-                    common: "FRIED RICE, ROTI, MIX BHAJA, PICKLE",
-                    veg: "RAJMA MASALA / VEG JAIPURI",
-                    dessert: "GULAB JAMUN",
-                    nonVeg: "NONE",
-                    healthy: "MIXED BOILED VEGETABLES"
-                }
-            },
-            "Wednesday": {
-                breakfast: {
-                    options: "BREAD (5 PCS), BUTTER (1 PC), JAM (1 PC) with<br>BOILED EGG (2 PCS) OR VEG CUTLET",
-                    common: "KETCHUP, TEA"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, ALOO BHARTA, NALI PAPAD, PICKLE",
-                    veg: "VEG MANCHURIAN",
-                    nonVeg: "FISH KALIA (2 PCS) / FISH HOMESTYLE WITH POTATO (2 PCS)",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "BISCUIT & TEA"
-                },
-                dinner: {
-                    common: "RICE, ROTI, DAL, SALAD, PICKLE",
-                    veg: "PANEER BHURJI / PANEER BHARTA",
-                    nonVeg: "CHICKEN HOMESTYLE CURRY (4 PCS) / CHICKEN HYDERABADI (4 PCS)",
-                    healthy: "MIXED BOILED VEGETABLES"
-                }
-            },
-            "Thursday": {
-                breakfast: {
-                    options: "VEG CHOWMEIN / VEG PASTA / CORN FLAKES WITH MILK & BANANA",
-                    common: "TEA"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, DAHI KADHI, NALI PAPAD, PICKLE",
-                    veg: "PUNJABI CHOLE MASALA / NAVRATNA KORMA",
-                    nonVeg: "NONE",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "CHAAT PAPDI & TEA"
-                },
-                dinner: {
-                    common: "RICE, PURI, PICKLE",
-                    veg: "CHANA DAL NARIYAL CURRY, ALOO DUM",
-                    dessert: "ICE CREAM / FRUIT CUSTARD",
-                    nonVeg: "NONE",
-                    healthy: "MIXED BOILED VEGETABLES"
-                }
-            },
-            "Friday": {
-                breakfast: {
-                    options: "BREAD (5 PCS), BUTTER (1 PC), JAM (1 PC) with<br>BOILED EGG (2 PCS) OR VEG CUTLET",
-                    common: "KETCHUP, TEA"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, ALOO KARELA CHIPS, PICKLE",
-                    veg: "VEG JHALFRY WITH PANEER",
-                    nonVeg: "FISH MUSTARD (2 PCS) / FISH PUNJABI (2 PCS)",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "JHAL MURI & COFFEE"
-                },
-                dinner: {
-                    common: "DAHI RAITA",
-                    veg: "VEG BIRYANI, PANEER BUTTER MASALA",
-                    nonVeg: "CHICKEN BIRYANI (4 PCS)",
-                    healthy: "MIXED BOILED VEGETABLES"
-                }
-            },
-            "Saturday": {
-                breakfast: {
-                    options: "VADA, GHUGUNI / DAHI VADA, ALOO DUM / CORN FLAKES WITH MILK & BANANA",
-                    common: "COFFEE"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, ALOO CHOKHA, PLAIN CURD, SRIRAM PAPAD, PICKLE",
-                    veg: "SOYABEAN ALOO CURRY / BESAN ALOO CURRY",
-                    nonVeg: "NONE",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "PAKODI (VEG), KETCHUP, TEA"
-                },
-                dinner: {
-                    common: "RICE, ROTI, DAL, KHEERA GAJA, PICKLE",
-                    veg: "SHAHI PANEER / PANEER KHURMA",
-                    nonVeg: "CHICKEN BUTTER MASALA (4 PCS) / CHICKEN KASSA (4 PCS)",
-                    healthy: "MIXED BOILED VEGETABLES"
-                }
-            },
-            "Sunday": {
-                breakfast: {
-                    options: "UTTAPAM, SAMBAR, CHUTNEY / CHAKULI, ALOO MASALA, CHUTNEY / BREAD (5 PCS), BUTTER (1 PC), JAM (1 PC)",
-                    common: "COFFEE"
-                },
-                lunch: {
-                    common: "RICE, ROTI, DAL, DAHI SALAD, COIN PAPAD, PICKLE",
-                    veg: "CABBAGE GREEN MATAR ALOO CURRY",
-                    nonVeg: "EGG CURRY WITH POTATO (2 PCS) / EGG MASALA (2 PCS)",
-                    healthy: "MIXED BOILED VEGETABLES"
-                },
-                snacks: {
-                    main: "MAGGI / PIAZI (2 PCS), KETCHUP, TEA"
-                },
-                dinner: {
-                    common: "FRIED RICE, ROTI, DAL FRY",
-                    veg: "CHILLI PANEER",
-                    nonVeg: "CHILLI CHICKEN (4 PCS)",
-                    dessert: "BOONDI / ICE CREAM",
-                    healthy: "MIXED BOILED VEGETABLES"
+            "QC 18": {
+                name: "QC 18",
+                wef: "W.E.F. 15.09.2026 • Queens' Castle - 18",
+                notes: [
+                    "<strong>Hostel:</strong> Queens' Castle - 18 (Superintendent: Dr. Kajal Parashar)",
+                    "<strong>Sick Boarders:</strong> Khichdi / Mix Boiled Vegetables provided upon prior information."
+                ],
+                menu: {
+                    "Monday": {
+                        breakfast: {
+                            options: "POHA / UPMA, GHUGUNI / BREAD, BUTTER, JAM / BANANA (COMPULSORY) / CORNFLAKES (MILK)",
+                            common: "TEA"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL",
+                            veg: "MIXED VEGETABLES, FINGER CHIPS",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "PAPDI CHAAT & COFFEE"
+                        },
+                        dinner: {
+                            common: "RICE, ROTI, DAL FRY / BUTTER PARATHA, DAHI, ACHAR",
+                            veg: "ALOO KASSA",
+                            dessert: "HALWA",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Tuesday": {
+                        breakfast: {
+                            options: "UTTAPAM, SAMBAR, CHUTNEY / BREAD, BUTTER, JAM",
+                            common: "TEA"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, PLAIN SALAD, PAPAD",
+                            veg: "BESAN ALOO CURRY",
+                            nonVeg: "EGG ALOO CURRY",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "VEG ROLL & TEA"
+                        },
+                        dinner: {
+                            common: "RICE, ROTI, DAL",
+                            veg: "MIXED BHURJI, RAJMA",
+                            dessert: "CUSTARD",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Wednesday": {
+                        breakfast: {
+                            options: "BREAD, BUTTER, JAM with VEG CUTLET / EGG OMELETTE (LESS SALT) / BOILED EGG",
+                            common: "COFFEE"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, FRYUMS",
+                            veg: "MALAI KOFTA",
+                            nonVeg: "CHILLI FISH",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "VADA PAV / VEGETABLE PAKODA & TEA"
+                        },
+                        dinner: {
+                            common: "RICE, ROTI, DAL",
+                            veg: "BUTTER PANEER MASALA",
+                            nonVeg: "BUTTER CHICKEN MASALA",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Thursday": {
+                        breakfast: {
+                            options: "IDLI, SAMBAR, COCONUT CHUTNEY / VADA, GHUGUNI / BREAD, BUTTER, JAM / CORNFLAKES (MILK) & BANANA",
+                            common: "COFFEE"
+                        },
+                        lunch: {
+                            common: "JEERA RICE, ROTI, DAL FRY, PLAIN DAHI, SALAD",
+                            veg: "CABBAGE CURRY",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "ALOO CHOP & TEA"
+                        },
+                        dinner: {
+                            common: "RICE, DAL, PURI, PUDINA CHUTNEY",
+                            veg: "CHOLE",
+                            dessert: "JALEBI",
+                            nonVeg: "NONE",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Friday": {
+                        breakfast: {
+                            options: "BREAD, BUTTER, JAM with ALOO TIKKI / EGG BHURJI",
+                            common: "TEA"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, SALAD",
+                            veg: "ALOO BEANS MASALA / ALOO METHI",
+                            nonVeg: "FISH ALOO BESAN",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "RUSK & COFFEE"
+                        },
+                        dinner: {
+                            common: "RAITA",
+                            veg: "VEG BIRYANI, MATAR PANEER",
+                            nonVeg: "CHICKEN BIRYANI",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Saturday": {
+                        breakfast: {
+                            options: "LUCHI, DUM ALOO / BREAD, BUTTER, JAM, BANANA",
+                            common: "TEA"
+                        },
+                        lunch: {
+                            common: "KHICHDI, NALI PAPAD, TOMATO CHUTNEY, ALOO CHOKHA, DALMA",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "CORN CHAAT & COFFEE"
+                        },
+                        dinner: {
+                            common: "RICE, ROTI, DAL, CHOWMEIN",
+                            veg: "MANCHURIAN GRAVY",
+                            nonVeg: "CHICKEN KASSA",
+                            dessert: "GULAB JAMUN",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    },
+                    "Sunday": {
+                        breakfast: {
+                            options: "DOSA, SAMBAR, CHUTNEY / BREAD, BUTTER, JAM",
+                            common: "COFFEE"
+                        },
+                        lunch: {
+                            common: "RICE, ROTI, DAL, SALAD",
+                            veg: "KADAI PANEER",
+                            nonVeg: "KADAI CHICKEN",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        },
+                        snacks: {
+                            main: "PASTA & COFFEE"
+                        },
+                        dinner: {
+                            common: "RICE, ROTI, DAL, ALOO BHAJI",
+                            veg: "SOYABEAN ALOO CURRY",
+                            nonVeg: "EGG CURRY",
+                            dessert: "ICE CREAM (MANGO)",
+                            healthy: "MIXED BOILED VEGETABLES"
+                        }
+                    }
                 }
             }
         };
@@ -450,20 +610,45 @@
             `;
         }
 
+        function renderFooter(hostelData) {
+            const footerContainer = document.getElementById('footerInfoContainer');
+            if (!hostelData || !footerContainer) return;
+            
+            let notesHtml = '';
+            if (hostelData.notes && hostelData.notes.length) {
+                notesHtml = hostelData.notes.map(note => `
+                    <div class="flex items-start space-x-2">
+                        <span class="text-blue-500 font-bold">•</span>
+                        <p class="text-gray-700 dark:text-gray-300">${note}</p>
+                    </div>
+                `).join('');
+            }
+
+            footerContainer.innerHTML = `
+                ${notesHtml}
+                <div class="text-right text-[11px] text-gray-400 dark:text-gray-500 pt-1">
+                    ${hostelData.wef || ''}
+                </div>
+            `;
+        }
+
         function renderView() {
             const container = document.getElementById('contentContainer');
             const daySelector = document.getElementById('daySelectorWrapper');
             container.innerHTML = '';
             
-            if (selectedHostelId !== 'KP-7 (ABCDEF)' && selectedHostelId !== 'KP-7 (ABC)') {
+            const hostelData = hostelMenus[selectedHostelId];
+            if (!hostelData) {
                 document.getElementById('mainContentArea').classList.add('hidden');
                 document.getElementById('emptyStateArea').classList.remove('hidden');
                 return;
             } else {
                 document.getElementById('mainContentArea').classList.remove('hidden');
                 document.getElementById('emptyStateArea').classList.add('hidden');
+                renderFooter(hostelData);
             }
 
+            const menuData = hostelData.menu;
             const now = new Date();
             const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             const currentDayName = days[now.getDay()];
@@ -553,7 +738,10 @@
         function renderSpecificDay() {
             const selectedDay = document.getElementById('daySelect').value;
             const container = document.getElementById('contentContainer');
-            const menu = menuData[selectedDay];
+            const hostelData = hostelMenus[selectedHostelId];
+            if (!hostelData) return;
+
+            const menu = hostelData.menu[selectedDay];
 
             let headerHtml = `
                 <div class="mb-6 flex flex-col items-center">
@@ -581,7 +769,8 @@
 
         function selectHostel(name) {
             selectedHostelId = name;
-            document.getElementById('selectedHostel').textContent = name;
+            const displayName = (name === 'QC 18') ? 'QC 18' : name;
+            document.getElementById('selectedHostel').textContent = displayName;
             localStorage.setItem('preferredHostel', name);
             toggleDropdown();
             renderView();
@@ -666,8 +855,13 @@
             const savedHostel = localStorage.getItem('preferredHostel');
             if(savedHostel) {
                 // Migrate older name if stored
-                selectedHostelId = (savedHostel === 'KP-7 (ABC)') ? 'KP-7 (ABCDEF)' : savedHostel;
-                document.getElementById('selectedHostel').textContent = selectedHostelId;
+                if (savedHostel === 'KP-7 (ABC)') {
+                    selectedHostelId = 'KP-7 (ABCDEF)';
+                } else {
+                    selectedHostelId = savedHostel;
+                }
+                const displayName = (selectedHostelId === 'QC 18') ? 'QC 18 (Queens\' Castle)' : selectedHostelId;
+                document.getElementById('selectedHostel').textContent = displayName;
             }
             renderView();
             // Automatically refresh every minute to update current serving meal
