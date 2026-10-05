@@ -1,4 +1,4 @@
-# Hostel Food Menu — KIIT
+ # Hostel Food Menu — KIIT
 
 [![PWA Ready](https://img.shields.io/badge/PWA-Ready-blue.svg)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v3.0-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
@@ -43,23 +43,6 @@ A lightweight, ultra-fast, and responsive web application designed for KIIT Univ
 | **Lunch** | `01:00 PM – 03:00 PM` |
 | **Evening Snacks** | `06:00 PM – 07:00 PM` |
 | **Dinner** | `08:00 PM – 10:00 PM` |
-
----
-
-## Live Demo & Deployment
-
-Because this project is a standalone single file, deploying it takes less than 30 seconds:
-
-### Deploying to GitHub Pages (Recommended)
-
-1. Fork or push this repository to GitHub.
-2. Go to your repository **Settings** tab.
-3. Scroll down on the left navigation to **Pages** (under the "Code and automation" section).
-4. Under **Build and deployment > Branch**:
-   - Select branch: `main` (or `master`).
-   - Select folder: `/ (root)`.
-   - Click **Save**.
-5. Your website will be live at `https://<your-username>.github.io/<repo-name>/` in 1–2 minutes!
 
 ---
 
@@ -118,6 +101,23 @@ Contributions are welcome! If you have the mess timetable for other KIIT hostels
 3. Commit your changes (`git commit -m 'Add timetable for KP-14'`).
 4. Push to the branch (`git push origin feature/Add-KP14-Menu`).
 5. Open a Pull Request.
+
+---
+
+## Live Demo & Deployment
+
+Because this project is a standalone single file, deploying it takes less than 30 seconds:
+
+### Deploying to GitHub Pages (Recommended)
+
+1. Fork or push this repository to GitHub.
+2. Go to your repository **Settings** tab.
+3. Scroll down on the left navigation to **Pages** (under the "Code and automation" section).
+4. Under **Build and deployment > Branch**:
+   - Select branch: `main` (or `master`).
+   - Select folder: `/ (root)`.
+   - Click **Save**.
+5. Your website will be live at `https://<your-username>.github.io/<repo-name>/` in 1–2 minutes!
 
 ---
 
