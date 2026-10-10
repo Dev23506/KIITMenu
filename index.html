@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-title" content="Hostel Menu">
 
     <!-- Embedded Web App Manifest (Data URI) -->
-    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiSG9zdGVsIEZvb2QgTWVudSIsInNob3J0X25hbWUiOiJNZW51Iiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwMDAwMDAiLCJ0aGVtZV9jb2xvciI6IiMyNTYzZWIiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sOzslM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgNTEyIDUxMic+PHJlY3Qgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIHJ4PScxMDAnIGZpbGw9JyUyNTYzZWInLz48cGF0aCBmaWxsPScjZmZmJyBkPSdNMjU2IDExMmMtNzkuNSAwLTE0NCA2NC41LTE0NCAxNDRzNjQuNSAxNDQgMTQ0IDE0NCAxNDQtNjQuNSAxNDQtMTQ0LTY0LjUtMTQ0LTE0NC0xNDR6bTcyIDIwNGgtNDR2NDRoLTU2di00NGgtNDR2LTU2aDQ0di00NGg1NnY0NGg0NHY1NnonLz48L3N2Zz4iLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
+    <link rel="manifest" href="manifest.json">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -1169,15 +1169,9 @@
             installBtn.classList.add('flex');
         }
 
-        // -- Service Worker Registration (Blob URL) --
+        // -- Service Worker Registration --
         if ('serviceWorker' in navigator) {
-            const swCode = `
-                self.addEventListener('install', (e) => self.skipWaiting());
-                self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
-                self.addEventListener('fetch', (e) => {});
-            `;
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+            navigator.serviceWorker.register('sw.js').catch((err) => console.error(err));
         }
 
         // App Initializer
