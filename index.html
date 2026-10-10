@@ -110,7 +110,7 @@
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('KP-7 (ABCDEF)')">KP-7 (ABCDEF)</button>
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 18')">QC 18 (Queens' Castle)</button>
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 8')">QC 8 (Queens' Castle)</button>
-                    <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 4')">QC 4</button>
+                    <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 3')">QC 3 (Queens' Castle)</button>
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium border-b border-gray-100 dark:border-gray-700" onclick="selectHostel('QC 12')">QC 12</button>
                     <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium" onclick="selectHostel('KP 14')">KP 14</button>
                 </div>
@@ -133,7 +133,7 @@
                     <button onclick="setTheme('dark')" class="p-2 rounded-lg text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="Dark Mode">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
-                    <button onclick="setTheme('amoled')" class="p-2 rounded-lg text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="AMOLED Pitch Black">
+                    <button onclick="setTheme('amoled')" class="p-2 rounded-lg text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" title="AMOLED Black">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"></path></svg>
                     </button>
                 </div>
@@ -889,6 +889,7 @@
         function getDisplayName(id) {
             if (id === 'QC 18') return "QC 18 (Queens' Castle)";
             if (id === 'QC 8') return "QC 8 (Queens' Castle)";
+            if (id === 'QC 3') return "QC 3 (Queens' Castle)"
             return id;
         }
 
